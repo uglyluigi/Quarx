@@ -6,8 +6,8 @@ class TwitterTimelineComponent extends React.Component {
     render() {
         return (<TwitterTimelineEmbed
             sourceType='profile'
-            screenName="GamerPres2020"
-            options={{height: 600, width: 500}}
+            screenName="quarxband"
+            options={{height: 1000, width: 700}}
             theme="dark"
             noScrollbar
             linkColor='#2bc29f'
