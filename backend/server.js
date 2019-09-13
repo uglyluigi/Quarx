@@ -4,26 +4,31 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 const connection = mongoose.connection;
-const usersRouter = require('./routes/users');
+const list_endpoints = require('express-list-endpoints');
 
 require('dotenv').config();
-const uri = process.env.ATLAS_URI;
 
-app.use('/users', usersRouter);
 app.use(cors());
-app.use(express.json());
 
+app.use(express.json());
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
+//Register blog post API endpoints
+app.use('/', require('./routes/index'));
+
+//--DB STUFF--
+
+console.log(list_endpoints(app));
 
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
-    console.log("Mongoose.connect success");
-} );
+mongoose.connect(process.env.BLOG_DB_TEST_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
+    console.log(`Successfully connected to MONGODB @ ${process.env.BLOG_DB_TEST_URI}`);
+});
 
 
 
