@@ -26,8 +26,8 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-mongoose.connect(process.env.MONGODB_CA_BLOG_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
-    console.log(`Successfully connected to MONGODB @ ${process.env.MONGODB_CA_BLOG_URI}`);
+mongoose.connect(process.env.BLOG_DB_TEST_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
+    console.log(`Successfully connected to MONGODB @ ${process.env.BLOG_DB_TEST_URI}`);
 });
 
 
