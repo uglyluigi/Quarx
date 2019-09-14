@@ -3,7 +3,10 @@ import {DB_URI} from "../../constants";
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const BlogPost = require('../../models/blog-post.model');
+const ObjectId = require('mongodb').ObjectID;
 
+
+const MongoClient = require('mongodb').MongoClient;
 
 //Info:
 // GET ALL requests behave like GET requests with this body:
@@ -16,11 +19,6 @@ const BlogPost = require('../../models/blog-post.model');
 
 //Router for GET requests @ quarx.com/api/blog-posts/
 
-var DBClient = require('mongodb').MongoClient;
-
-DBClient.connect(DB_URI)
-    .then(() => console.log("Blog posts API successfully connected to DB"))
-    .catch(err => console.log(`Error while connecting blog post api to DB:\n${err}`));
 
 router.post('/', (request, response, next) => {
     console.log("POST request received");
@@ -48,13 +46,15 @@ router.get('/', (request, response, next) => {
 router.get('/:postId', (request, response, next) => {
     let info = ``;
 
-    console.log("GET (id) request received.");
-    console.log(`Searching DB ${DB_URI} for object with ID ${request.params.postId}`);
+    MongoClient.connect(DB_URI, function (err, client) {
+        if (err) throw err;
 
-    var db = DBClient.db("test");
-    db.collection("blog-posts");
-
-
+        var db = client.db('test');
+        db.collection('blog-posts').find({_id : ObjectId(request.params.postId)}).toArray(function (err, result) {
+            if (err) throw err;
+            console.log(result);
+        });
+    });
 
     const get_all = request.body.get_all;
 
