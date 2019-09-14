@@ -14,6 +14,13 @@ const BlogPostSchema = new Schema({
         required: true,
         unique: false,
         trim: true
+    },
+
+    images: {
+        type: Array,
+        required: false,
+        unique: false,
+        trim: true
     }
 }, {
     timestamps: true
