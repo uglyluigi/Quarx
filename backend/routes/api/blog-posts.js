@@ -1,3 +1,5 @@
+import {DB_URI} from "../../constants";
+
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const BlogPost = require('../../models/blog-post.model');
@@ -14,6 +16,11 @@ const BlogPost = require('../../models/blog-post.model');
 
 //Router for GET requests @ quarx.com/api/blog-posts/
 
+var DBClient = require('mongodb').MongoClient;
+
+DBClient.connect(DB_URI)
+    .then(() => console.log("Blog posts API successfully connected to DB"))
+    .catch(err => console.log(`Error while connecting blog post api to DB:\n${err}`));
 
 router.post('/', (request, response, next) => {
     console.log("POST request received");
@@ -40,12 +47,19 @@ router.get('/', (request, response, next) => {
 
 router.get('/:postId', (request, response, next) => {
     let info = ``;
+
     console.log("GET (id) request received.");
+    console.log(`Searching DB ${DB_URI} for object with ID ${request.params.postId}`);
+
+    var db = DBClient.db("test");
+    db.collection("blog-posts");
+
+
 
     const get_all = request.body.get_all;
 
     if (get_all) {
-        info += `Note: this GET (id) request looks like a malformed GET (ALL) request. Remove the post ID in the URL to perform a GET (ALL) request. `
+        info += `Note: this GET request has the body of what this API considers a GETALL request. It will be ignored.`;
     }
 
     return response.status(404).json({success: false, info: info});
