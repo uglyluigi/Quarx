@@ -26,6 +26,7 @@ router.post('/', (request, response, next) => {
                 .then(out => {
                     response.status(201).json({message: "Post successfully POSTed (xd)", post: out.ops})
                 })
+                .then(() => connection.close());
         });
 
     return response;
