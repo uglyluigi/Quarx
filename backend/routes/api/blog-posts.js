@@ -17,34 +17,7 @@ const MongoClient = mongodb.MongoClient;
 
 //Helpful functions
 
-//Query the blog post DB with the specified DOC
-//Connections are closed at the end of each query
-async function queryDB(doc) {
-    const DB = USE_TEST_DB ? 'test' : 'quarx-blog-db';
-    const COLLECTION = 'blog-posts';
-
-    const connection = await get_db_connection();
-
-    if (connection) {
-        const db = await config_connection(connection);
-        const query = await db.find(doc);
-
-        return query;
-    }
-
-    connection.close();
-    return null;
-}
-
-//Evaluates a promise and returns a connection object to the database.
-async function get_db_connection() {
-    return MongoClient.connect(DB_URI, {useNewUrlParser: true});
-}
-
-//Configures and returns a database object.
-async function config_connection(connection, db_name=USE_TEST_DB ? 'test' : 'quarx-blog-db', collection='blog-posts') {
-    return await connection.db(db_name).collection(collection);
-}
+//bye bye
 
 //Router for POST requests @ quarx.com/api/blog-posts/
 
