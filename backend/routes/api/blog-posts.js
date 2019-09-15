@@ -1,4 +1,4 @@
-import {DB_URI, USE_TEST_DB} from "../../constants";
+import {DB_URI, USE_TEST_DB, BLOG_DB_NAME, BLOG_COLLECTION_NAME} from "../../constants";
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -23,11 +23,11 @@ async function queryDB(doc) {
     const DB = USE_TEST_DB ? 'test' : 'quarx-blog-db';
     const COLLECTION = 'blog-posts';
 
-    const connection = await MongoClient.connect(DB_URI, {useNewUrlParser: true}).catch(e => console.log("Error during DB query: "+ e));
+    const connection = await get_db_connection();
 
     if (connection) {
-        const db = await connection.db(DB).collection(COLLECTION);
-        const query = await db.find(doc).toArray();
+        const db = await config_connection(connection);
+        const query = await db.find(doc);
 
         return query;
     }
@@ -36,19 +36,43 @@ async function queryDB(doc) {
     return null;
 }
 
+//Evaluates a promise and returns a connection object to the database.
+async function get_db_connection() {
+    return MongoClient.connect(DB_URI, {useNewUrlParser: true});
+}
+
+//Configures and returns a database object.
+async function config_connection(connection, db_name=USE_TEST_DB ? 'test' : 'quarx-blog-db', collection='blog-posts') {
+    return await connection.db(db_name).collection(collection);
+}
+
 //Router for POST requests @ quarx.com/api/blog-posts/
-//currently borked
 
 router.post('/', (request, response, next) => {
-    //TODO verify the contents of the post before saving to DB
+    //TODO add authentication
     console.log("POST request received");
 
     const title = request.body.title;
     const body = request.body.body;
-    const post = new BlogPost({title, body});
+    const images = request.body.images;
 
-    return post.save()
-        .then(() => response.json({post: post.toJSON()}))
+    if (!title) {
+        return response.status(400).json({message: "Blog POST requests must contain a title in its body.", sorry: false});
+    }
+
+    if (!body) {
+        return response.status(400).json({message: "Blog POST requests must contain a post body in its body.", sorry: false});
+    }
+
+    if (!images) {
+        return response.status(400).json({message: "Blog POST requests have to contain an array of images (even an empty one).", sorry: false});
+    }
+
+    const post = new BlogPost({title, body, images, hidden: false});
+
+    return post
+        .save()
+        .then(() => response.status(200).json({success: true, id: post._id, you_did_good: true}))
         .catch(next);
 });
 
@@ -59,42 +83,94 @@ router.get('/', async (request, response, next) => {
 
     if (get_all) {
         console.log("GET (ALL) request received");
-        const query_res = await queryDB({});
 
-        return response.status(200).json(query_res);
+        MongoClient.connect(DB_URI)
+            .then(connection => {
+                connection
+                    .db(BLOG_DB_NAME)
+                    .collection(BLOG_COLLECTION_NAME)
+                    .find()
+                    .toArray()
+                    .then(all_posts => {
+                        response.status(200).json(all_posts);
+                    })
+                    .then(() => connection.close());
+            })
+    } else {
+        response.status(400).json({message: "Your GET request is being made at the root URI but does not contain the proper body."})
     }
 
-    return response.status(400).json({message: `GET ALL request must have a JSON body with field \"get_all\": true`, sorry: false});
+
+
+    return response;
 });
 
 //Router for GET requests that provide a specific post ID to retrieve
 
 router.get('/:postId', async (request, response, next) => {
-    const id = request.params.postId;
+    const postId = request.params.postId;
 
     //Respond with 'bad request' if the post ID they're trying to GET doesn't meet MongoDB's requirements.
-    if (!ObjectId.isValid(id)) {
-        return response.status(400).json({message: `The provided ID \'${id}\' is not a valid DB object ID.`, sorry: false})
+    if (!ObjectId.isValid(postId)) {
+        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`, sorry: false})
     }
 
-    const query_res = await queryDB({_id: ObjectId(id)});
+    MongoClient.connect(DB_URI)
+        .then(connection => {
+            connection
+                .db(BLOG_DB_NAME)
+                .collection(BLOG_COLLECTION_NAME)
+                .findOne({_id: ObjectId(postId)})
+                .then(out => {
+                    if (out != null) {
+                        response.status(200).json(out);
+                    } else {
+                        response.status(404).json({message: `Post with ID ${postId} does not exist in this DB.`, sorry: true});
+                    }
+                }, err => {
+                    console.log("Error connecting to mongo: " + err);
+                    response.status(500).json({message: "Something weird happened when communicating with MongoDB.", sorry: true});
+                })
+                .then(() => connection.close());
+        });
 
-    //Respond with 'OK' and the json containing the post at the given ID if it was found in the DB.
-    if (query_res != null) {
-        return response.status(200).json(query_res);
-    } else {
-        //Otherwise, respond with 'not found', because the request was valid, but the resource simply isn't here.
-        return response.status(404).json({message: `Post with ID ${id} does not exist in this DB.`, sorry: true});
-    }
+    return response;
 });
 
 //Router for DELETE requests that provide a specific post ID to delete
 
-router.delete('/:postId', (request, response, next) => {
+router.delete('/:postId', async (request, response, next) => {
     //TODO implement deletes, probably just end up updating a field in the post instead
     //of removing it from the DB
-    console.log("DELETE request received");
-    return response.status(501).json({message: "Deletion is not implemented yet.", sorry: true})
+
+    const postId = request.params.postId;
+
+    if (!ObjectId.isValid(postId)) {
+        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`});
+    }
+
+    MongoClient.connect(DB_URI)
+        .then(connection => {
+            connection
+                .db(BLOG_DB_NAME)
+                .collection(BLOG_COLLECTION_NAME)
+                .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
+                .then(out => {
+                    const {matchedCount, modifiedCount} = out;
+
+                    //If it was matched and updated
+                    if (modifiedCount == 1) {
+                        response.status(200).json({message: `Post with id ${postId} has been deleted.`});
+                    } else if (modifiedCount == 0 && matchedCount == 1) { //If it was matched but not updated
+                        response.status(304).json({message: "That post is already deleted."});
+                    } else { //If it wasn't even matched
+                        response.status(404).json({message: `Cannot delete post ${postId}: it does not exist.`, sorry: false});
+                    }
+                })
+                .then(() => connection.close())
+        });
+
+    return response;
 });
 
 module.exports = router;
