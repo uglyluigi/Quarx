@@ -18,9 +18,13 @@ const BlogPostSchema = new Schema({
 
     images: {
         type: Array,
-        required: false,
+        required: true,
         unique: false,
         trim: true
+    },
+
+    hidden: {
+      type: Boolean
     }
 }, {
     timestamps: true
