@@ -7,18 +7,6 @@ const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
 
-//Info:
-// GET ALL requests behave like GET requests with this body:
-//{
-//  "get_all": true
-//}
-//All other GET requests must provide a post ID.
-//
-
-//Helpful functions
-
-//bye bye
-
 //Router for POST requests @ quarx.com/api/blog-posts/
 
 router.post('/', (request, response, next) => {
@@ -29,24 +17,18 @@ router.post('/', (request, response, next) => {
     const body = request.body.body;
     const images = request.body.images;
 
-    if (!title) {
-        return response.status(400).json({message: "Blog POST requests must contain a title in its body.", sorry: false});
-    }
+    MongoClient.connect(DB_URI)
+        .then(connection => {
+            connection
+                .db(BLOG_DB_NAME)
+                .collection(BLOG_COLLECTION_NAME)
+                .insert({title: title, body: body, images: images, hidden: false})
+                .then(out => {
+                    response.status(201).json({message: "Post successfully POSTed (xd)", post: out.ops})
+                })
+        });
 
-    if (!body) {
-        return response.status(400).json({message: "Blog POST requests must contain a post body in its body.", sorry: false});
-    }
-
-    if (!images) {
-        return response.status(400).json({message: "Blog POST requests have to contain an array of images (even an empty one).", sorry: false});
-    }
-
-    const post = new BlogPost({title, body, images, hidden: false});
-
-    return post
-        .save()
-        .then(() => response.status(200).json({success: true, id: post._id, you_did_good: true}))
-        .catch(next);
+    return response;
 });
 
 //Router for GET requests with a JSON body containing "get_all": true @ /api/blog-posts/
