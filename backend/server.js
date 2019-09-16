@@ -1,35 +1,34 @@
+import {DB_URI, PORT} from './constants';
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const app = express();
-const port = process.env.PORT || 5000;
-const connection = mongoose.connection;
-const list_endpoints = require('express-list-endpoints');
+const express_app = express();
 
-require('dotenv').config();
+express_app.use(cors());
+express_app.use(express.json());
 
-app.use(cors());
-
-app.use(express.json());
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+express_app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`);
 });
 
 //Register blog post API endpoints
-app.use('/', require('./routes/index'));
+express_app.use('/', require('./routes/index'));
 
 //--DB STUFF--
 
-console.log(list_endpoints(app));
+console.log(require('express-list-endpoints')(express_app));
+
+const connection = mongoose.connection;
 
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-mongoose.connect(process.env.BLOG_DB_TEST_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
-    console.log(`Successfully connected to MONGODB @ ${process.env.BLOG_DB_TEST_URI}`);
-});
-
+mongoose.connect(DB_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
+    console.log(`Successfully connected to MONGODB @ ${DB_URI}`);
+}).catch(err => console.log(`Failed to connect to MONGODB @ ${DB_URI}:\n${err}`));
 
 
 
