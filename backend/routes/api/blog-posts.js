@@ -1,4 +1,4 @@
-import {DB_URI, USE_TEST_DB, BLOG_DB_NAME, BLOG_COLLECTION_NAME} from "../../constants";
+import {DB_URI, BLOG_DB_NAME, BLOG_COLLECTION_NAME} from "../../constants";
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -16,6 +16,10 @@ router.post('/', (request, response, next) => {
     const title = request.body.title;
     const body = request.body.body;
     const images = request.body.images;
+
+    if (!title || !body || !images) {
+        return response.status(400).json({message: "Your blog post must contain a title, body, and array of images (even if it's empty).", sorry: false});
+    }
 
     MongoClient.connect(DB_URI)
         .then(connection => {
