@@ -4,3 +4,21 @@
     flex-direction: column;
     height: 400px;
 }
+
+.jumbotron {
+    margin-bottom: 4em;
+    color: lightgrey;
+    background-color: #282c34;
+}
+
+
+
+h2 {
+    margin-bottom: 1em;
+    font-size: 40px;
+}
+
+body{
+    color: lightgrey;
+}
+

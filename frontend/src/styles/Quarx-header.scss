@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:900%22");
+
+$size: 20vw;
+$shadow: 20;
+$primary: grey;
+$secondary: black;
+
+.wrapper {
+  animation: sliding-background 40s linear infinite;
+  background: url("https://images.unsplash.com/photo-1452697620382-f6543ead73b5") no-repeat left / 140%;
+  height: 50vh;
+  text-align: center;
+  width: 100vw;
+}
+
+.title {
+background: $primary;
+color: $secondary;
+font-family: "Montserrat", sans-serif;
+font-size: $size;
+letter-spacing: 3vw;
+line-height: 50vh;
+margin: 0;
+mix-blend-mode: hard-light;
+text-transform: uppercase;
+$text-shadow: ();
+@for $i from 1 through $shadow {
+  $text-shadow: $text-shadow, 1px * $i 1px * $i $secondary;
+}
+text-shadow: 0 0 0px, $text-shadow;
+
+&:before {
+  color: $primary;
+  content: attr(data-text);
+  margin-left: -1%;
+  margin-top: -1%;
+  position: absolute;
+}
+}
+
+@keyframes sliding-background {
+  0%,
+  100% {
+    background-position: 0 60%;
+  }
+
+  50% {
+    background-position: 100% 60%;
+  }
+}
+
+body { margin: 0; background: #171717; }
