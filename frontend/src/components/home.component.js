@@ -1,6 +1,6 @@
 import '../styles/material-fonts.css'
 import '../styles/flex-column-layout.css'
-import '../styles/style-home-component.css'
+import '../styles/home-component.css'
 import React, { Component } from 'react';
 import {Jumbotron, Container, Row, Image, Button, Col} from 'react-bootstrap';
 import TwitterTimelineComponent from './twitter.component'
