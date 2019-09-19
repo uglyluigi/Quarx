@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:900%22");
 
-$size: 20vw;
-$shadow: 20;
+$size: 18vw;
+$shadow: 18;
 $primary: grey;
 $secondary: black;
 
 .wrapper {
-  animation: sliding-background 40s linear infinite;
+  animation: sliding-background 60s linear infinite;
   background: url("https://images.unsplash.com/photo-1452697620382-f6543ead73b5") no-repeat left / 140%;
-  height: 50vh;
+  height: 45vh;
   text-align: center;
   width: 100vw;
 }
@@ -19,7 +19,7 @@ color: $secondary;
 font-family: "Montserrat", sans-serif;
 font-size: $size;
 letter-spacing: 3vw;
-line-height: 50vh;
+line-height: 43vh;
 margin: 0;
 mix-blend-mode: hard-light;
 text-transform: uppercase;
@@ -49,4 +49,3 @@ text-shadow: 0 0 0px, $text-shadow;
   }
 }
 
-body { margin: 0; background: #171717; }
