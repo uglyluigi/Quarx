@@ -1,4 +1,4 @@
-import {DB_URI, BLOG_DB_NAME, BLOG_COLLECTION_NAME} from "../../constants";
+import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME} from "../../constants";
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -24,7 +24,7 @@ router.post('/', (request, response, next) => {
     MongoClient.connect(DB_URI)
         .then(connection => {
             connection
-                .db(BLOG_DB_NAME)
+                .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .insert({title: title, body: body, images: images, hidden: false})
                 .then(out => {
@@ -47,7 +47,7 @@ router.get('/', async (request, response, next) => {
         MongoClient.connect(DB_URI)
             .then(connection => {
                 connection
-                    .db(BLOG_DB_NAME)
+                    .db(DB_CLUSTER_NAME)
                     .collection(BLOG_COLLECTION_NAME)
                     .find()
                     .toArray()
@@ -78,7 +78,7 @@ router.get('/:postId', async (request, response, next) => {
     MongoClient.connect(DB_URI)
         .then(connection => {
             connection
-                .db(BLOG_DB_NAME)
+                .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .findOne({_id: ObjectId(postId)})
                 .then(out => {
@@ -112,7 +112,7 @@ router.delete('/:postId', async (request, response, next) => {
     MongoClient.connect(DB_URI)
         .then(connection => {
             connection
-                .db(BLOG_DB_NAME)
+                .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
                 .then(out => {
