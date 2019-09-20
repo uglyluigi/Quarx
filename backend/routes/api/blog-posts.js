@@ -1,5 +1,5 @@
 import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME} from "../../constants";
-import {produce_update_response, validate_objid_and_respond} from "./common"
+import {produce_update_response, validate_objid_and_respond, handle_mongo_error} from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -18,7 +18,7 @@ const empty = require('is-empty');
 /**
  * Router for POST requests at /api/blog-posts/
  */
-router.post('/', (request, response, next) => {
+router.post('/', (request, response) => {
     console.log("POST request received");
 
     const title = request.body.title;
@@ -35,9 +35,10 @@ router.post('/', (request, response, next) => {
                 .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .insert({title: title, body: body, images: images, hidden: false})
-                .then(out => response.status(201).json({message: "Post successfully POSTed (xd)", post: out.ops}))
+                .then(out => response.status(201).json({message: "Success", post: out.ops}))
                 .then(() => connection.close());
-        });
+        })
+        .catch(err => handle_mongo_error(response, err));
 
     return response;
 });
@@ -51,7 +52,7 @@ router.post('/', (request, response, next) => {
  *     "get_all": true
  * }
  */
-router.get('/', (request, response, next) => {
+router.get('/', (request, response) => {
     const get_all = request.body.get_all;
 
     if (get_all) {
@@ -67,6 +68,7 @@ router.get('/', (request, response, next) => {
                     .then(all_posts => response.status(200).json(all_posts))
                     .then(() => connection.close());
             })
+            .catch(err => handle_mongo_error(response, err));
     } else {
         response.status(400).json({message: "Your GET request is being made at the root URI but does not contain the proper body."})
     }
@@ -77,7 +79,7 @@ router.get('/', (request, response, next) => {
 /**
  * Router for GET requests at /api/blog-posts/:postId
  */
-router.get('/:postId', (request, response, next) => {
+router.get('/:postId', (request, response) => {
     const postId = request.params.postId;
 
     //Respond with 'bad request' if the post ID they're trying to GET doesn't meet MongoDB's requirements.
@@ -95,13 +97,14 @@ router.get('/:postId', (request, response, next) => {
                     if (out != null) {
                         response.status(200).json(out);
                     } else {
-                        response.status(404).json({message: `Post with ID ${postId} does not exist in this DB.`, sorry: true});
+                        response.status(404).json({
+                            message: `Post with ID ${postId} does not exist in this DB.`,
+                            sorry: true
+                        });
                     }
-                }, err => {
-                    console.log("Error connecting to mongo: " + err);
-                    response.status(500).json({message: "Something weird happened when communicating with MongoDB.", sorry: true});
                 })
-                .then(() => connection.close());
+                .then(() => connection.close())
+                .catch(err => handle_mongo_error(response, err));
         });
 
     return response;
@@ -110,7 +113,7 @@ router.get('/:postId', (request, response, next) => {
 /**
  * Router for DELETE requests at /api/blog-posts/:postId
  */
-router.delete('/:postId', (request, response, next) => {
+router.delete('/:postId', (request, response) => {
     const postId = request.params.postId;
 
     if (!validate_objid_and_respond(response, postId)) {
@@ -125,6 +128,7 @@ router.delete('/:postId', (request, response, next) => {
                 .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
                 .then(out => produce_update_response(response, out, postId))
                 .then(() => connection.close())
+                .catch(err => handle_mongo_error(response, err));
         });
 
     return response;
@@ -133,7 +137,7 @@ router.delete('/:postId', (request, response, next) => {
 /**
  * Router for PUT requests at /api/blog-posts/:postId
  */
-router.put('/:postId', (request, response, next) => {
+router.put('/:postId', (request, response) => {
     console.log("PUT to /blog-posts");
     const postId = request.params.postId;
 
@@ -176,6 +180,7 @@ router.put('/:postId', (request, response, next) => {
                 .updateOne({_id: ObjectId(postId)}, {$set: doc})
                 .then(out => produce_update_response(response, out, postId))
                 .then(() => connection.close())
+                .catch(err => handle_mongo_error(response, err));
         });
 
     return response;
