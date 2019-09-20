@@ -1,5 +1,5 @@
-import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, EMS_COLLECTION_NAME} from "../../constants";
-import produce_update_response from "./common"
+import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME} from "../../constants";
+import {produce_update_response, validate_objid_and_respond} from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -10,10 +10,15 @@ const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 
 
-//Router for POST requests @ quarx.com/api/blog-posts/
+/**
+ * TODO:
+ * * Add auth (passport probably)
+ */
 
+/**
+ * Router for POST requests at /api/blog-posts/
+ */
 router.post('/', (request, response, next) => {
-    //TODO add authentication
     console.log("POST request received");
 
     const title = request.body.title;
@@ -37,9 +42,16 @@ router.post('/', (request, response, next) => {
     return response;
 });
 
-//Router for GET requests with a JSON body containing "get_all": true @ /api/blog-posts/
-
-router.get('/', async (request, response, next) => {
+/**
+ * Router for GET requests at /api/blog-posts/
+ * Express does not offer explicit GET ALL support, so this acts in its place
+ * Does not return anything unless JSON body contains the following:
+ *
+ * {
+ *     "get_all": true
+ * }
+ */
+router.get('/', (request, response, next) => {
     const get_all = request.body.get_all;
 
     if (get_all) {
@@ -59,19 +71,18 @@ router.get('/', async (request, response, next) => {
         response.status(400).json({message: "Your GET request is being made at the root URI but does not contain the proper body."})
     }
 
-
-
     return response;
 });
 
-//Router for GET requests that provide a specific post ID to retrieve
-
-router.get('/:postId', async (request, response, next) => {
+/**
+ * Router for GET requests at /api/blog-posts/:postId
+ */
+router.get('/:postId', (request, response, next) => {
     const postId = request.params.postId;
 
     //Respond with 'bad request' if the post ID they're trying to GET doesn't meet MongoDB's requirements.
-    if (!ObjectId.isValid(postId)) {
-        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`, sorry: false})
+    if (!validate_objid_and_respond(response, postId)) {
+        return response;
     }
 
     MongoClient.connect(DB_URI)
@@ -96,16 +107,14 @@ router.get('/:postId', async (request, response, next) => {
     return response;
 });
 
-//Router for DELETE requests that provide a specific post ID to delete
-
-router.delete('/:postId', async (request, response, next) => {
-    //TODO implement deletes, probably just end up updating a field in the post instead
-    //of removing it from the DB
-
+/**
+ * Router for DELETE requests at /api/blog-posts/:postId
+ */
+router.delete('/:postId', (request, response, next) => {
     const postId = request.params.postId;
 
-    if (!ObjectId.isValid(postId)) {
-        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`});
+    if (!validate_objid_and_respond(response, postId)) {
+        return response;
     }
 
     MongoClient.connect(DB_URI)
@@ -121,6 +130,9 @@ router.delete('/:postId', async (request, response, next) => {
     return response;
 });
 
+/**
+ * Router for PUT requests at /api/blog-posts/:postId
+ */
 router.put('/:postId', (request, response, next) => {
     console.log("PUT to /blog-posts");
     const postId = request.params.postId;
@@ -132,8 +144,8 @@ router.put('/:postId', (request, response, next) => {
 
     let doc = {};
 
-    if (!ObjectId.isValid(postId)) {
-        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`});
+    if (!validate_objid_and_respond(response, postId)) {
+        return response;
     }
 
     if (new_title) {
