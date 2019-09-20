@@ -1,4 +1,4 @@
-import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME} from "../../constants";
+import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, MDB_CLIENT_OPS} from "../../constants";
 import {produce_update_response, validate_objid_and_respond, handle_mongo_error} from "./common"
 
 const mongoose = require('mongoose');
@@ -29,7 +29,7 @@ router.post('/', (request, response) => {
         return response.status(400).json({message: "Your blog post must contain a title, body, and array of images (even if it's empty).", sorry: false});
     }
 
-    MongoClient.connect(DB_URI)
+    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
         .then(connection => {
             connection
                 .db(DB_CLUSTER_NAME)
@@ -58,7 +58,7 @@ router.get('/', (request, response) => {
     if (get_all) {
         console.log("GET (ALL) request received");
 
-        MongoClient.connect(DB_URI)
+        MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
             .then(connection => {
                 connection
                     .db(DB_CLUSTER_NAME)
@@ -87,7 +87,7 @@ router.get('/:postId', (request, response) => {
         return response;
     }
 
-    MongoClient.connect(DB_URI)
+    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
         .then(connection => {
             connection
                 .db(DB_CLUSTER_NAME)
@@ -120,16 +120,15 @@ router.delete('/:postId', (request, response) => {
         return response;
     }
 
-    MongoClient.connect(DB_URI)
+    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
         .then(connection => {
             connection
                 .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
                 .then(out => produce_update_response(response, out, postId))
-                .then(() => connection.close())
-                .catch(err => handle_mongo_error(response, err));
-        });
+                .then(() => connection.close());
+        }).catch(err => handle_mongo_error(response, err));
 
     return response;
 });
@@ -172,16 +171,16 @@ router.put('/:postId', (request, response) => {
         return response.status(304).json({message: "Your PUT request doesn\'t attempt to update anything."});
     }
 
-    MongoClient.connect(DB_URI)
+    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
         .then(connection => {
             connection
                 .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .updateOne({_id: ObjectId(postId)}, {$set: doc})
                 .then(out => produce_update_response(response, out, postId))
-                .then(() => connection.close())
-                .catch(err => handle_mongo_error(response, err));
-        });
+                .then(() => connection.close());
+        })
+        .catch(err => handle_mongo_error(response, err));
 
     return response;
 });
