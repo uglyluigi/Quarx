@@ -1,4 +1,5 @@
-import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME} from "../../constants";
+import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, EMS_COLLECTION_NAME} from "../../constants";
+import produce_update_response from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -6,6 +7,8 @@ const BlogPost = require('../../models/blog-post.model');
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
+const empty = require('is-empty');
+
 
 //Router for POST requests @ quarx.com/api/blog-posts/
 
@@ -27,9 +30,7 @@ router.post('/', (request, response, next) => {
                 .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .insert({title: title, body: body, images: images, hidden: false})
-                .then(out => {
-                    response.status(201).json({message: "Post successfully POSTed (xd)", post: out.ops})
-                })
+                .then(out => response.status(201).json({message: "Post successfully POSTed (xd)", post: out.ops}))
                 .then(() => connection.close());
         });
 
@@ -51,9 +52,7 @@ router.get('/', async (request, response, next) => {
                     .collection(BLOG_COLLECTION_NAME)
                     .find()
                     .toArray()
-                    .then(all_posts => {
-                        response.status(200).json(all_posts);
-                    })
+                    .then(all_posts => response.status(200).json(all_posts))
                     .then(() => connection.close());
             })
     } else {
@@ -115,18 +114,55 @@ router.delete('/:postId', async (request, response, next) => {
                 .db(DB_CLUSTER_NAME)
                 .collection(BLOG_COLLECTION_NAME)
                 .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
-                .then(out => {
-                    const {matchedCount, modifiedCount} = out;
+                .then(out => produce_update_response(response, out, postId))
+                .then(() => connection.close())
+        });
 
-                    //If it was matched and updated
-                    if (modifiedCount == 1) {
-                        response.status(200).json({message: `Post with id ${postId} has been deleted.`});
-                    } else if (modifiedCount == 0 && matchedCount == 1) { //If it was matched but not updated
-                        response.status(304).json({message: "That post is already deleted."});
-                    } else { //If it wasn't even matched
-                        response.status(404).json({message: `Cannot delete post ${postId}: it does not exist.`, sorry: false});
-                    }
-                })
+    return response;
+});
+
+router.put('/:postId', (request, response, next) => {
+    console.log("PUT to /blog-posts");
+    const postId = request.params.postId;
+
+    const new_title = request.body.title;
+    const new_body = request.body.body;
+    const new_images = request.body.images;
+    const new_hidden = request.body.hidden;
+
+    let doc = {};
+
+    if (!ObjectId.isValid(postId)) {
+        return response.status(400).json({message: `The provided ID \'${postId}\' is not a valid DB object ID.`});
+    }
+
+    if (new_title) {
+        doc['title'] = new_title;
+    }
+
+    if (new_body) {
+        doc['body'] = new_body;
+    }
+
+    if (new_images) {
+        doc['images'] = new_images;
+    }
+
+    if (new_hidden) {
+        doc['hidden'] = new_hidden;
+    }
+
+    if (empty(doc)) {
+        return response.status(304).json({message: "Your PUT request doesn\'t attempt to update anything."});
+    }
+
+    MongoClient.connect(DB_URI)
+        .then(connection => {
+            connection
+                .db(DB_CLUSTER_NAME)
+                .collection(BLOG_COLLECTION_NAME)
+                .updateOne({_id: ObjectId(postId)}, {$set: doc})
+                .then(out => produce_update_response(response, out, postId))
                 .then(() => connection.close())
         });
 
