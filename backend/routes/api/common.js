@@ -42,5 +42,10 @@ module.exports = {
         } else {
             return true;
         }
+    },
+
+    handle_mongo_error: function (response, error) {
+        console.log("The following error occurred with the MongoDB client:\n" + error);
+        response.status(500).json({message: "An error occurred with the MongoDB client.", error: error});
     }
 };
