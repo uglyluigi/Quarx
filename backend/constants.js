@@ -8,6 +8,6 @@ export const DB_CLUSTER_NAME = USE_TEST_DB ? 'test' : 'quarx-blog-db';
 export const BLOG_COLLECTION_NAME = 'blog-posts';
 export const EMS_COLLECTION_NAME = 'ems-members';
 export const PORT = process.env.PORT;
-export const MDB_CLIENT_OPS = {useNewUrlParser: true};
+export const MDB_CLIENT_OPS = {useNewUrlParser: true, useUnifiedTopology: true};
 
 export * from "./constants"

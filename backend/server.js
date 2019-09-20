@@ -1,4 +1,4 @@
-import {DB_URI, PORT} from './constants';
+import {DB_URI, MDB_CLIENT_OPS, PORT} from './constants';
 require('dotenv').config();
 
 const express = require('express');
@@ -26,7 +26,7 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-mongoose.connect(DB_URI, {useNewUrlParser: true, useCreateIndex: true}).then(r =>{
+mongoose.connect(DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}).then(r =>{
     console.log(`Successfully connected to MONGODB @ ${DB_URI}`);
 }).catch(err => console.log(`Failed to connect to MONGODB @ ${DB_URI}:\n${err}`));
 
