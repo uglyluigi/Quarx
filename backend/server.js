@@ -5,9 +5,15 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const express_app = express();
+const body_parser = require('body-parser');
+const axiosDefaults = require('axios/lib/defaults');
+
+axiosDefaults.baseURL = 'http://localhost:5000';
 
 express_app.use(cors());
 express_app.use(express.json());
+express_app.use(body_parser.urlencoded({extended: true}));
+express_app.use(body_parser.json());
 
 express_app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
