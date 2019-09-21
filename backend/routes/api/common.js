@@ -46,7 +46,6 @@ module.exports = {
 
     /**
      * Function for handling mongo DB errors.
-     *
      * @param response the response to modify. Sets the status to 500
      * @param error the error provided by the mongo client.
      */
@@ -54,4 +53,4 @@ module.exports = {
         console.log("The following error occurred with the MongoDB client:\n" + error);
         response.status(500).json({message: "An error occurred with the MongoDB client.", error: error});
     }
-};
+}
