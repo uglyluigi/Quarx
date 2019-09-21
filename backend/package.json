@@ -10,7 +10,7 @@
     "express": "^4.17.1",
     "express-list-endpoints": "^4.0.1",
     "is-empty": "^1.2.0",
-    "mongoose": "^5.7.1"
+    "mongoose": "^5.7.1",
     "nodemon": "^1.19.2"
   },
   "scripts": {
