@@ -8,6 +8,7 @@ const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
+const axios = require('axios');
 
 
 /**
@@ -182,6 +183,17 @@ router.put('/:postId', (request, response) => {
         })
         .catch(err => handle_mongo_error(response, err));
 
+    return response;
+});
+
+/**
+ * Router for PUT requests at /api/blog-posts/
+ * Simply redirects to the POST router at /api/blog-posts/ and returns the response
+ */
+router.put('/', (request, response) => {
+    axios.post('/api/blog-posts', request.body)
+        .then(response2 => response.status(response2.status).json(response2.data))
+        .catch(err => response.status(err.response.status).json(err.response.data));
     return response;
 });
 
