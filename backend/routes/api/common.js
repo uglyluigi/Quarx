@@ -46,7 +46,6 @@ module.exports = {
 
     /**
      * Function for handling mongo DB errors.
-     * I'm adding this line so I can delete it later.
      *
      * @param response the response to modify. Sets the status to 500
      * @param error the error provided by the mongo client.
