@@ -7,6 +7,7 @@ import Home from "./components/home.component"
 import Music from "./components/music.component"
 import Merchandise from "./components/merchandise.component"
 import Mail from "./components/mail.component"
+import Login from "./Login"
 import Navbar from "./components/navbar.component"
 import { NavLink } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/music" exact component={Music}/>
                 <Route path="/merchandise" exact component={Merchandise}/>
                 <Route path="/mail" exact component={Mail}/>
+                <Route path="/login" exact component={Login}/>
 
             </div>
         </Router>
