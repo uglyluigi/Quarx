@@ -11,6 +11,7 @@
     "express-list-endpoints": "^4.0.1",
     "is-empty": "^1.2.0",
     "mongoose": "^5.7.1"
+    "nodemon": "^1.19.2"
   },
   "scripts": {
     "nodemon-es6": "nodemon --exec babel-node --presets es2015 server.js"

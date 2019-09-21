@@ -1,9 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
-import "./styles/style-site-header.css"
-import "./styles/anim-rainbow-text-effect.scss"
-
+import "./styles/Quarx-header.scss"
 import Navbar from "./components/navbar.component"
 import Home from "./components/home.component"
 import Music from "./components/music.component"
@@ -16,15 +14,15 @@ import {TwitterTimelineEmbed} from "react-twitter-embed";
 function App() {
     return (
         <Router>
-            <div className="quarx-header-text">
-                <h1 className={"animated"}>
+            <div className="wrapper">
+                <div className={"title"} data-text={"Quarx"}>
                     Quarx
-                </h1>
+                </div>
 
             </div>
 
             <div className="pt-under-logo">
-                <Navbar className="pt-5"/>
+                <Navbar/>
                 <br/>
 
                 <Route path="/" exact component={Home}/>
