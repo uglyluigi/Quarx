@@ -46,14 +46,11 @@ router.post('/', (request, response) => {
 /**
  * Router for GET requests at /api/blog-posts/
  * Express does not offer explicit GET ALL support, so this acts in its place
- * Does not return anything unless JSON body contains the following:
- *
- * {
- *     "get_all": true
- * }
+ * Does not return anything unless the request contains a query parameter like this:
+ * ?all=true
  */
 router.get('/', (request, response) => {
-    const get_all = request.body.get_all;
+    const get_all = request.query['all'];
 
     if (get_all) {
         console.log("GET (ALL) request received");
