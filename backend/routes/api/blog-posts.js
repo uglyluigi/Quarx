@@ -10,7 +10,6 @@ const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
 
-
 /**
  * TODO:
  * * Add auth (passport probably)

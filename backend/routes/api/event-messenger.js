@@ -6,7 +6,6 @@ const EMSUser = require('../../models/ems-user.model');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-
 router.post('/', (request, response, next) => {
     console.log("POST to /event-messenger");
 
