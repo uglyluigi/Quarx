@@ -52,5 +52,22 @@ module.exports = {
     handle_mongo_error: function (response, error) {
         console.log("The following error occurred with the MongoDB client:\n" + error);
         response.status(500).json({message: "An error occurred with the MongoDB client.", error: error});
+    },
+
+    /**
+     * Function for handling unauthorized API calls.
+     *
+     * @param response the response sent to the unauthorized client.
+     * @return boolean if an unauthorized API call was made and was handled (and the response was modified).
+     *         false if the request is authorized.
+     */
+    handle_unauthorized_api_call: function (request, response) {
+        if (!request.isAuthenticated()) {
+            console.log("Ah ah ah! You didn\'t say the magic word!");
+            response.status(401).json({message: "I have a boyfriend.", sorry: false});
+            return true;
+        } else {
+            return false;
+        }
     }
-}
+};
