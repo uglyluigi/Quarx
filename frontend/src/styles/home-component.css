@@ -1,24 +1,23 @@
-.center {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    height: 400px;
-}
-
 .jumbotron {
     margin-bottom: 4em;
     color: lightgrey;
     background-color: #282c34;
+    width: 100%;
 }
 
+p{
+    font-size: 200%;
 
+}
 
 h2 {
     margin-bottom: 1em;
-    font-size: 40px;
+    font-size: 300%;
 }
+
 
 body{
+    margin: 0;
+    background: #171717;
     color: lightgrey;
 }
-

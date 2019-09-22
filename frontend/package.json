@@ -38,6 +38,8 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.4.1",
+    "@material-ui/styles": "^4.4.1",
     "cors": "^2.8.5"
   }
 }
