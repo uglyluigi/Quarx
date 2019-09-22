@@ -1,5 +1,5 @@
 import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, MDB_CLIENT_OPS} from "../../constants";
-import {produce_update_response, validate_objid_and_respond, handle_mongo_error} from "./common"
+import {produce_update_response, validate_objid_and_respond, handle_mongo_error, handle_unauthorized_api_call} from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -9,6 +9,8 @@ const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
+const passport = require('passport');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 /**
  * TODO:
@@ -20,6 +22,10 @@ const axios = require('axios');
  */
 router.post('/', (request, response) => {
     console.log("POST request received");
+
+    if (handle_unauthorized_api_call(request, response)) {
+        return response;
+    }
 
     const title = request.body.title;
     const body = request.body.body;
