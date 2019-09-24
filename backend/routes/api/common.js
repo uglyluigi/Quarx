@@ -63,11 +63,27 @@ module.exports = {
      */
     handle_unauthorized_api_call: function (request, response) {
         if (!request.isAuthenticated()) {
-            console.log("Ah ah ah! You didn\'t say the magic word!");
-            response.status(401).json({message: "I have a boyfriend.", sorry: false});
+            console.log(`${request.method} request to ${request.path} was DENIED (unauthorized). Ouch.`)
+            response.status(401).json({message: "You are not authorized to make that request.", sorry: false});
             return true;
         } else {
             return false;
         }
+    },
+
+    /**
+     * A function that logs each request to the console.
+     * Called when any request is received (only called in server.js)
+     *
+     * @param request the request to log.
+     * @param response this doesn't matter.
+     * @param next the next middleware function.
+     */
+    log_request: function (request, response, next) {
+        const method = request.method;
+        const uri = request.path;
+        console.log(`${method} request was received at ${uri}.`);
+
+        next();
     }
 };
