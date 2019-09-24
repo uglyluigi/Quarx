@@ -1,26 +1,32 @@
+import {handle_unauthorized_api_call} from "./common"
+
 const AccessUser = require('../../models/access-user');
 const passport = require('passport');
 const router = require('express').Router();
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', (request, response, next) => {
+    if (handle_unauthorized_api_call(request, response)) {
+        return response;
+    }
+
     AccessUser.register(new AccessUser({
-        username: req.body.username
+        username: request.body.username
     }),
-        req.body.password, (err, user) => {
+        request.body.password, (err, user) => {
             if (err) {
-                res.statusCode = 500;
-                res.setHeader('Content-Type', 'application/json');
-                res.json({
+                response.statusCode = 500;
+                response.setHeader('Content-Type', 'application/json');
+                response.json({
                     err: err
                 });
             } else {
-                passport.authenticate('local')(req, res, () => {
+                passport.authenticate('local')(request, response, () => {
                     AccessUser.findOne({
-                        username: req.body.username
+                        username: request.body.username
                     }, (err, person) => {
-                        res.statusCode = 200;
-                        res.setHeader('Content-Type', 'application/json');
-                        res.json({
+                        response.statusCode = 200;
+                        response.setHeader('Content-Type', 'application/json');
+                        response.json({
                             success: true,
                             status: "GOOD JOB"
                         })
@@ -30,14 +36,14 @@ router.post('/signup', (req, res, next) => {
         });
 });
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    AccessUser.findOne({username: req.body.username}, (err, person) => {
-        req.login(person, function (err, something) {
+router.post('/login', passport.authenticate('local'), (request, response) => {
+    AccessUser.findOne({username: request.body.username}, (err, person) => {
+        request.login(person, function (err, something) {
 
         });
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json({
+        response.statusCode = 200;
+        response.setHeader('Content-Type', 'application/json');
+        response.json({
             success: true,
             status: "YOU DID IT!!!"
         })
