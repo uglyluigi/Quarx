@@ -9,20 +9,11 @@ const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
-const passport = require('passport');
-const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
-
-/**
- * TODO:
- * * Add auth (passport probably)
- */
 
 /**
  * Router for POST requests at /api/blog-posts/
  */
 router.post('/', (request, response) => {
-    console.log("POST request received");
-
     if (handle_unauthorized_api_call(request, response)) {
         return response;
     }
@@ -59,8 +50,6 @@ router.get('/', (request, response) => {
     const get_all = request.query['all'];
 
     if (get_all) {
-        console.log("GET (ALL) request received");
-
         MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
             .then(connection => {
                 connection
@@ -119,7 +108,7 @@ router.get('/:postId', (request, response) => {
 router.delete('/:postId', (request, response) => {
     const postId = request.params.postId;
 
-    if (!validate_objid_and_respond(response, postId)) {
+    if (handle_unauthorized_api_call(request, response) || !validate_objid_and_respond(response, postId)) {
         return response;
     }
 
@@ -140,7 +129,10 @@ router.delete('/:postId', (request, response) => {
  * Router for PUT requests at /api/blog-posts/:postId
  */
 router.put('/:postId', (request, response) => {
-    console.log("PUT to /blog-posts");
+    if (handle_unauthorized_api_call(request, response)) {
+        return response;
+    }
+
     const postId = request.params.postId;
 
     const new_title = request.body.title;
