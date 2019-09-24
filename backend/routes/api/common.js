@@ -85,5 +85,18 @@ module.exports = {
         console.log(`${method} request was received at ${uri}.`);
 
         next();
+    },
+
+    /**
+     * Lazy, generic handler for errors I dont feel like dealing with.
+     * Checks for null.
+     *
+     * @param err the error
+     * @param response the response the error will be written to
+     */
+    go_away_err: function (err, response) {
+        if (err) {
+            response.status(500).json({err: err});
+        }
     }
 };
