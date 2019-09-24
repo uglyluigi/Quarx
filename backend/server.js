@@ -11,20 +11,22 @@ const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const AccessUser = require('./models/access-user');
+const log_request = require('./routes/api/common').log_request;
 
 axiosDefaults.baseURL = 'http://localhost:5000';
 
+express_app.use(log_request);
 express_app.use(cors());
 express_app.use(express.json());
 express_app.use(body_parser.urlencoded({extended: true}));
 express_app.use(body_parser.json());
+
 express_app.use(session({
     name: 'expression', //nice one gamer
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false
 }));
-
 express_app.use(passport.initialize());
 express_app.use(passport.session());
 
@@ -32,7 +34,7 @@ passport.use(new LocalStrategy(AccessUser.authenticate()));
 passport.serializeUser(AccessUser.serializeUser());
 passport.deserializeUser(AccessUser.deserializeUser());
 
-
+//Begin listening
 express_app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });
