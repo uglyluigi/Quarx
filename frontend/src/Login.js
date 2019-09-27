@@ -76,6 +76,18 @@ const useStyles = makeStyles({
 
 export default function SignIn() {
     const classes = useStyles();
+
+    function onSubmit(event) {
+        event.preventDefault();
+        const axios = require('axios');
+        const data = new FormData(event.target);
+
+        axios.post('http://localhost:5000/api/login/login', {
+            username: data.get('username'),
+            password: data.get('password'),
+        }).then(response => console.log(response.message));
+    }
+
     return (
         <Container maxWidth="xs">
             <div className={classes.alignment}>
@@ -85,7 +97,7 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={onSubmit}>
                     <ThemeProvider theme={theme}>
                         <TextField
                             variant="outlined"
