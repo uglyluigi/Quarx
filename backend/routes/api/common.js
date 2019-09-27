@@ -44,8 +44,59 @@ module.exports = {
         }
     },
 
+    /**
+     * Function for handling mongo DB errors.
+     * @param response the response to modify. Sets the status to 500
+     * @param error the error provided by the mongo client.
+     */
     handle_mongo_error: function (response, error) {
         console.log("The following error occurred with the MongoDB client:\n" + error);
         response.status(500).json({message: "An error occurred with the MongoDB client.", error: error});
+    },
+
+    /**
+     * Function for handling unauthorized API calls.
+     *
+     * @param response the response sent to the unauthorized client.
+     * @return boolean if an unauthorized API call was made and was handled (and the response was modified).
+     *         false if the request is authorized.
+     */
+    handle_unauthorized_api_call: function (request, response) {
+        if (!request.isAuthenticated()) {
+            console.log(`${request.method} request to ${request.path} was DENIED (unauthorized). Ouch.`)
+            response.status(401).json({message: "You are not authorized to make that request.", sorry: false});
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     * A function that logs each request to the console.
+     * Called when any request is received (only called in server.js)
+     *
+     * @param request the request to log.
+     * @param response this doesn't matter.
+     * @param next the next middleware function.
+     */
+    log_request: function (request, response, next) {
+        const method = request.method;
+        const uri = request.path;
+        console.log(`${method} request was received at ${uri}.`);
+
+        next();
+    },
+
+    /**
+     * Lazy, generic handler for errors I dont feel like dealing with.
+     * Checks for null.
+     *
+     * @param err the error
+     * @param response the response the error will be written to
+     */
+    go_away_err: function (err, response) {
+        if (err) {
+            response.status(500).json({err: err});
+        }
     }
 };

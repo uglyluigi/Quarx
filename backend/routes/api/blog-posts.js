@@ -1,5 +1,5 @@
 import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, MDB_CLIENT_OPS} from "../../constants";
-import {produce_update_response, validate_objid_and_respond, handle_mongo_error} from "./common"
+import {produce_update_response, validate_objid_and_respond, handle_mongo_error, handle_unauthorized_api_call} from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -10,17 +10,13 @@ const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
 
-
-/**
- * TODO:
- * * Add auth (passport probably)
- */
-
 /**
  * Router for POST requests at /api/blog-posts/
  */
 router.post('/', (request, response) => {
-    console.log("POST request received");
+    if (handle_unauthorized_api_call(request, response)) {
+        return response;
+    }
 
     const title = request.body.title;
     const body = request.body.body;
@@ -47,18 +43,13 @@ router.post('/', (request, response) => {
 /**
  * Router for GET requests at /api/blog-posts/
  * Express does not offer explicit GET ALL support, so this acts in its place
- * Does not return anything unless JSON body contains the following:
- *
- * {
- *     "get_all": true
- * }
+ * Does not return anything unless the request contains a query parameter like this:
+ * ?all=true
  */
 router.get('/', (request, response) => {
-    const get_all = request.body.get_all;
+    const get_all = request.query['all'];
 
     if (get_all) {
-        console.log("GET (ALL) request received");
-
         MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
             .then(connection => {
                 connection
@@ -117,7 +108,7 @@ router.get('/:postId', (request, response) => {
 router.delete('/:postId', (request, response) => {
     const postId = request.params.postId;
 
-    if (!validate_objid_and_respond(response, postId)) {
+    if (handle_unauthorized_api_call(request, response) || !validate_objid_and_respond(response, postId)) {
         return response;
     }
 
@@ -138,7 +129,10 @@ router.delete('/:postId', (request, response) => {
  * Router for PUT requests at /api/blog-posts/:postId
  */
 router.put('/:postId', (request, response) => {
-    console.log("PUT to /blog-posts");
+    if (handle_unauthorized_api_call(request, response)) {
+        return response;
+    }
+
     const postId = request.params.postId;
 
     const new_title = request.body.title;
