@@ -5,15 +5,14 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import {grey} from "@material-ui/core/colors";
+import {ThemeProvider} from "@material-ui/styles";
 
 const theme = createMuiTheme({
-    palette:{
+    palette: {
         primary: {
             main: '#171717',
         },
@@ -21,12 +20,9 @@ const theme = createMuiTheme({
             main: '#282c34',
         },
     },
-    textPrimary: {
-        main: 'white',
-    },
     overrides: {
-        MuiLink:{
-            root:{
+        MuiLink: {
+            root: {
                 color: 'white',
             }
         },
@@ -60,15 +56,15 @@ const useStyles = makeStyles({
         marginTop: theme.spacing(1),
     },
     labelColor: {
-        color : 'grey',
+        color: 'grey',
     },
     inputColor: {
-        color : 'grey',
+        color: 'grey',
     },
     focused: {
         color: 'white',
     },
-    notchedOutline: {
+    outline: {
         borderWidth: '1px',
         borderColor: 'white !important'
     },
@@ -84,75 +80,74 @@ export default function SignIn() {
         <Container maxWidth="xs">
             <div className={classes.alignment}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
                 <form className={classes.form}>
                     <ThemeProvider theme={theme}>
-                    <TextField
-                        label="label"
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelColor,
-                                focused: classes.focused,
-                            },
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: classes.inputColor,
-                                focused: classes.focused,
-                                notchedOutline: classes.notchedOutline,
-                            }}}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        InputLabelProps={{
-                            classes: {
-                                root: classes.labelColor,
-                                focused: classes.focused,
-                            },
-                        }}
-                        InputProps={{
-                            classes: {
-                                root: classes.inputColor,
-                                focused: classes.focused,
-                                notchedOutline: classes.notchedOutline,
-                            }}}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        className={classes.submit}
-                    >
-                        Sign In
-                    </Button>
-                    <Grid>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoFocus
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.labelColor,
+                                    focused: classes.focused,
+                                },
+                            }}
+                            InputProps={{
+                                classes: {
+                                    root: classes.inputColor,
+                                    focused: classes.focused,
+                                    notchedOutline: classes.outline,
+                                }
+                            }}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            InputLabelProps={{
+                                classes: {
+                                    root: classes.labelColor,
+                                    focused: classes.focused,
+                                },
+                            }}
+                            InputProps={{
+                                classes: {
+                                    root: classes.inputColor,
+                                    focused: classes.focused,
+                                    notchedOutline: classes.outline,
+                                }
+                            }}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
+                            className={classes.submit}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid>
                             <Link href="#" color="secondary">
                                 {"Sign Up"}
                             </Link>
-                    </Grid>
-                </ThemeProvider>
+                        </Grid>
+                    </ThemeProvider>
                 </form>
             </div>
         </Container>

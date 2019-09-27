@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-p{
+p {
     font-size: 200%;
 
 }
@@ -13,11 +13,4 @@ p{
 h2 {
     margin-bottom: 1em;
     font-size: 300%;
-}
-
-
-body{
-    margin: 0;
-    background: #171717;
-    color: lightgrey;
 }

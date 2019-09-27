@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {TwitterTimelineEmbed} from "react-twitter-embed";
 
 
-class TwitterTimelineComponent extends React.Component {
+class TwitterTimelineComponent extends Component {
     render() {
         return (<TwitterTimelineEmbed
             sourceType='profile'
