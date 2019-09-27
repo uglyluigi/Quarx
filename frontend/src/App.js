@@ -9,28 +9,69 @@ import Merchandise from "./components/merchandise.component"
 import Mail from "./components/mail.component"
 import Login from "./Login"
 import Navbar from "./components/navbar.component"
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import {createMuiTheme, makeStyles} from "@material-ui/core";
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#171717',
+        },
+        secondary: {
+            main: '#282c34',
+        },
+    },
+    textPrimary: {
+        main: 'white',
+    },
+    overrides: {
+        MuiLink: {
+            root: {
+                color: 'white',
+            }
+        },
+        MuiInputLabel: {
+            root: {
+                "&$focused": {
+                    color: 'white'
+                }
+            }
+        },
+    }
+});
+
+const useStyles = makeStyles({
+    '@global': {
+        body: {
+            backgroundColor: theme.palette.primary.main,
+        },
+    },
+    alignment: {
+        marginTop: theme.spacing(5),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+});
 
 function App() {
+    const classes = useStyles();
     return (
         <Router>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
-            <div className="wrapper">
-                <div className={"title"} data-text={"Quarx"}>
-                    Quarx
+                <div className="wrapper">
+                    <div className={"title"} data-text={"Quarx"}>
+                        Quarx
+                    </div>
                 </div>
-            </div>
             </NavLink>
-            <div className="pt-under-logo">
-                <Navbar/>
-                <br/>
-                <Route path="/" exact component={Home}/>
-                <Route path="/music" exact component={Music}/>
-                <Route path="/merchandise" exact component={Merchandise}/>
-                <Route path="/mail" exact component={Mail}/>
-                <Route path="/login" exact component={Login}/>
-
-            </div>
+            <Navbar/>
+            <br/>
+            <Route path="/" exact component={Home}/>
+            <Route path="/music" exact component={Music}/>
+            <Route path="/merchandise" exact component={Merchandise}/>
+            <Route path="/mail" exact component={Mail}/>
+            <Route path="/login" exact component={Login}/>
         </Router>
     );
 }

@@ -14,28 +14,28 @@ $secondary: black;
 }
 
 .title {
-background: $primary;
-color: $secondary;
-font-family: "Montserrat", sans-serif;
-font-size: $size;
-letter-spacing: 3vw;
-line-height: 43vh;
-margin: 0;
-mix-blend-mode: hard-light;
-text-transform: uppercase;
-$text-shadow: ();
-@for $i from 1 through $shadow {
-  $text-shadow: $text-shadow, 1px * $i 1px * $i $secondary;
-}
-text-shadow: 0 0 0px, $text-shadow;
+  background: $primary;
+  color: $secondary;
+  font-family: "Montserrat", sans-serif;
+  font-size: $size;
+  letter-spacing: 3vw;
+  line-height: 43vh;
+  margin: 0;
+  mix-blend-mode: hard-light;
+  text-transform: uppercase;
+  $text-shadow: ();
+  @for $i from 1 through $shadow {
+    $text-shadow: $text-shadow, 1px * $i 1px * $i $secondary;
+  }
+  text-shadow: 0 0 0, $text-shadow;
 
-&:before {
-  color: $primary;
-  content: attr(data-text);
-  margin-left: -1%;
-  margin-top: -1%;
-  position: absolute;
-}
+  &:before {
+    color: $primary;
+    content: attr(data-text);
+    margin-left: -1%;
+    margin-top: -1%;
+    position: absolute;
+  }
 }
 
 @keyframes sliding-background {
