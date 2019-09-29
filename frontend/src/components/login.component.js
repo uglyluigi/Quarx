@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
-import FormErrors from "../FormErrors";
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {makeStyles} from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
@@ -40,7 +36,6 @@ const theme = createMuiTheme({
         },
     }
 });
-
 const useStyles = theme => ({
     '@global': {
         body: {
@@ -85,6 +80,7 @@ export class LoginComponent extends React.Component {
 
         this.handleUserInput = this.handleUserInput.bind(this);
         this.validateField = this.validateField.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
@@ -143,12 +139,12 @@ export class LoginComponent extends React.Component {
         return error.length === 0 ? '' : 'has-error';
     }
 
+    onSubmit (event) {
+        event.preventDefault();
+    }
+
     render () {
         const {classes} = this.props;
-
-        function onSubmit(event) {
-            event.preventDefault();
-        }
 
         return (
             <Container maxWidth="xs">
@@ -159,9 +155,10 @@ export class LoginComponent extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} onSubmit={onSubmit}>
+                    <form className={classes.form} onSubmit={this.onSubmit}>
                         <ThemeProvider theme={theme}>
                             <TextField
+                                onChange={this.handleUserInput}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -185,6 +182,7 @@ export class LoginComponent extends React.Component {
                                 }}
                             />
                             <TextField
+                                onChange={this.handleUserInput}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -213,6 +211,7 @@ export class LoginComponent extends React.Component {
                                 variant="contained"
                                 color="secondary"
                                 className={classes.submit}
+                                disabled={!this.state.formValid}
                             >
                                 Sign In
                             </Button>
