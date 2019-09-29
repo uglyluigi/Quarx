@@ -3,6 +3,8 @@ import {handle_unauthorized_api_call, go_away_err} from "./common"
 const AccessUser = require('../../models/access-user');
 const passport = require('passport');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 /**
  * POST router to /api/login/signup
@@ -57,15 +59,28 @@ router.post('/signup', (request, response, next) => {
  * password, making this susceptible to MITM attacks, however if we configure SSL correctly on the actual
  * deployed site this might become a non-issue.
  */
-router.post('/login', passport.authenticate('local'), (request, response) => {
-    AccessUser.findOne({username: request.body.username}, (err, person) => {
-        request.login(person, function (err, something) {
-            console.log("Login request received");
-            go_away_err(err, response);
-        });
+router.post('/login', (request, response) => {
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        console.log(`User found 2: ${user}`);
+        console.log(`Info: ${info}`);
+        console.log(`Err: ${err}`);
 
-        response.status(200).json({message: "You have been successfully logged in.", nice_one: true});
-    });
+        if (err || !user) {
+            return response.status(400).json({
+                message: 'Invalid credentials.',
+                user: user
+            })
+        }
+
+        request.login(user, {session: false}, (err) => {
+            if (err) {
+                return response.status(500).json({error: err});
+            }
+
+            const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+            return response.status(200).json({user, token});
+        });
+    })(request, response);
 
     return response;
 });
