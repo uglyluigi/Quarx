@@ -9,15 +9,12 @@ const ObjectId = mongodb.ObjectID;
 const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
+const passport = require('passport');
 
 /**
  * Router for POST requests at /api/blog-posts/
  */
-router.post('/', (request, response) => {
-    if (handle_unauthorized_api_call(request, response)) {
-        return response;
-    }
-
+router.post('/', passport.authenticate('jwt', {session: false}), (request, response) => {
     const title = request.body.title;
     const body = request.body.body;
     const images = request.body.images;
@@ -105,10 +102,10 @@ router.get('/:postId', (request, response) => {
 /**
  * Router for DELETE requests at /api/blog-posts/:postId
  */
-router.delete('/:postId', (request, response) => {
+router.delete('/:postId', passport.authenticate('jwt', {session: false}), (request, response) => {
     const postId = request.params.postId;
 
-    if (handle_unauthorized_api_call(request, response) || !validate_objid_and_respond(response, postId)) {
+    if (!validate_objid_and_respond(response, postId)) {
         return response;
     }
 
@@ -128,7 +125,7 @@ router.delete('/:postId', (request, response) => {
 /**
  * Router for PUT requests at /api/blog-posts/:postId
  */
-router.put('/:postId', (request, response) => {
+router.put('/:postId', passport.authenticate('jwt', {session: false}), (request, response) => {
     if (handle_unauthorized_api_call(request, response)) {
         return response;
     }

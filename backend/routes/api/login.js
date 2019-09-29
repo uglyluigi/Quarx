@@ -15,11 +15,7 @@ require('dotenv').config();
  * we only want site admins to have special
  * access.
  */
-router.post('/signup', (request, response, next) => {
-    if (handle_unauthorized_api_call(request, response)) {
-        return response;
-    }
-
+router.post('/signup', passport.authenticate('jwt', {session: false}), (request, response, next) => {
     AccessUser.register(new AccessUser({username: request.body.username}), request.body.password, (err, user) => {
             if (err) {
                 response.status(500).json({err: err});
