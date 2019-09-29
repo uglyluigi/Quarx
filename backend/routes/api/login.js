@@ -81,6 +81,33 @@ router.post('/login', (request, response) => {
     return response;
 });
 
+router.get('/login', (request, response) => {
+    console.log('request.headers => ' + new Boolean(request.headers));
+    console.log('request.headers.authorization => ' + new Boolean(request.headers.authorization));
+    console.log(request.headers);
+    if (request.headers && request.headers.authorization) {
+        let authorization = request.headers.authorization.split(' ')[1];
+        let decoded;
+
+        try {
+            decoded = jwt.verify(authorization, process.env.JWT_SECRET)
+        } catch (e) {
+            return response.status(400).json({message: "Your token is invalid."});
+        }
+
+        let userId = decoded._id;
+
+        AccessUser.findOne({_id: userId}).then(user => {
+            console.log('It was approved.');
+            response.status(200).json(user);
+        })
+    } else {
+        response.status(400).json({message: 'Invalid credentials.'});
+    }
+
+    return response;
+});
+
 /**
  * GET router to /api/login/logout (lol).
  * Destroys the user's session if one exists.
