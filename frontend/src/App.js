@@ -8,6 +8,7 @@ import Music from "./components/music.component"
 import Merchandise from "./components/merchandise.component"
 import Mail from "./components/mail.component"
 import Login from "./components/login.component"
+import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
@@ -72,6 +73,7 @@ function App() {
             <Route path="/merchandise" exact component={Merchandise}/>
             <Route path="/mail" exact component={Mail}/>
             <Route path="/login" exact component={Login}/>
+            <Route path="/control-panel" exact component={ControlPanel}/>
         </Router>
     );
 }
