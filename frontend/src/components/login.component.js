@@ -9,6 +9,7 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import {withStyles} from '@material-ui/styles';
 import {PropTypes} from 'prop-types';
+import {getBaseUrl} from '../service';
 
 const theme = createMuiTheme({
     palette: {
@@ -16,7 +17,7 @@ const theme = createMuiTheme({
             main: '#171717',
         },
         secondary: {
-            main: '#282c34',
+            main: '#2bc29f',
         },
     },
     overrides: {
@@ -50,7 +51,7 @@ const useStyles = theme => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: "#282c34",
     },
     form: {
         marginTop: theme.spacing(1),
@@ -88,7 +89,8 @@ export class LoginComponent extends React.Component {
             formErrors: {username: '', password: ''},
             usernameValid: false,
             passwordValid: false,
-            formValid: false
+            formValid: false,
+            goodResponse: true
         }
     }
 
@@ -141,6 +143,20 @@ export class LoginComponent extends React.Component {
 
     onSubmit (event) {
         event.preventDefault();
+        const axios = require('axios');
+
+        axios.post(getBaseUrl() + "/api/login/login", {
+            username: this.state.username,
+            password: this.state.password,
+        }).then(response => {
+            if (response.statusCode === 200) {
+                this.setState({goodResponse: true});
+            }
+        }, err => {
+            if (err.response.status === 401) {
+                this.setState({goodResponse: false});
+            }
+        });
     }
 
     render () {
@@ -154,6 +170,9 @@ export class LoginComponent extends React.Component {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
+                    </Typography>
+                    <Typography component={'h1'} variant={'h5'} style={{visibility: this.state.goodResponse ? 'hidden' : 'visible'}}>
+                        Invalid credentials.
                     </Typography>
                     <form className={classes.form} onSubmit={this.onSubmit}>
                         <ThemeProvider theme={theme}>
