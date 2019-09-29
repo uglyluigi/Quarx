@@ -12,6 +12,8 @@ import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
+import {getBaseUrl} from "./service"
+const axios = require('axios');
 
 const theme = createMuiTheme({
     palette: {
@@ -54,28 +56,20 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
 });
-
-const auth = {
-    isAuthenticated: false,
-    authenticate(cb) {
-        this.isAuthenticated = true;
-        setTimeout(cb, 100);
-    },
-    signout(cb) {
-        this.isAuthenticated = false;
-        setTimeout(cb, 100);
-    }
-};
-
-const PrivateRoute = ({ component: ControlPanel, ...rest }) => (
-    <Route {...rest} render={(props) => (
-        auth.isAuthenticated === true
-            ? <ControlPanel {...props} />
-            : <Redirect to='/login' />
-    )} />
-);
-
 function App() {
+    const classes = useStyles();
+    let loggedIn = false;
+
+    if (localStorage.token) {
+        loggedIn = axios.get(getBaseUrl() + '/api/login/login', {
+            headers: {
+                "Authorization": "Bearer " + localStorage.token,
+            }
+        }).then(response => {
+            return response.status === 200;
+        });
+    }
+
     return (
         <Router>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
@@ -92,7 +86,9 @@ function App() {
             <Route path="/merchandise" exact component={Merchandise}/>
             <Route path="/mail" exact component={Mail}/>
             <Route path="/login" exact component={Login}/>
-            <PrivateRoute path="/control-panel" exact component={ControlPanel}/>
+            <Route path='/control-panel' render={() => (
+                loggedIn ? (<ControlPanel/>) : (<Redirect to={'/login'}/>)
+            )}/>
         </Router>
     );
 }
