@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./styles/Quarx-header.scss"
 import "./App.css"
@@ -55,8 +55,27 @@ const useStyles = makeStyles({
     },
 });
 
+const auth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+        this.isAuthenticated = true;
+        setTimeout(cb, 100);
+    },
+    signout(cb) {
+        this.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+};
+
+const PrivateRoute = ({ component: ControlPanel, ...rest }) => (
+    <Route {...rest} render={(props) => (
+        auth.isAuthenticated === true
+            ? <ControlPanel {...props} />
+            : <Redirect to='/login' />
+    )} />
+);
+
 function App() {
-    const classes = useStyles();
     return (
         <Router>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
@@ -73,7 +92,7 @@ function App() {
             <Route path="/merchandise" exact component={Merchandise}/>
             <Route path="/mail" exact component={Mail}/>
             <Route path="/login" exact component={Login}/>
-            <Route path="/control-panel" exact component={ControlPanel}/>
+            <PrivateRoute path="/control-panel" exact component={ControlPanel}/>
         </Router>
     );
 }

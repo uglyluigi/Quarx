@@ -149,6 +149,7 @@ export class LoginComponent extends React.Component {
             username: this.state.username,
             password: this.state.password,
         }).then(response => {
+            console.log(response.headers);
             if (response.statusCode === 200) {
                 this.setState({goodResponse: true});
             }
