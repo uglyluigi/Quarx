@@ -1,5 +1,3 @@
-import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, EMS_COLLECTION_NAME} from "../../constants";
-import {flatten_error_array} from './common';
 const router = require('express').Router();
 const EMSUser = require('../../models/ems-user.model');
 
