@@ -1,4 +1,4 @@
-import {handle_unauthorized_api_call, go_away_err} from "./common"
+import {go_away_err} from "./common"
 
 const AccessUser = require('../../models/access-user');
 const passport = require('passport');
@@ -57,10 +57,6 @@ router.post('/signup', passport.authenticate('jwt', {session: false}), (request,
  */
 router.post('/login', (request, response) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
-        console.log(`User found 2: ${user}`);
-        console.log(`Info: ${info}`);
-        console.log(`Err: ${err}`);
-
         if (err || !user) {
             return response.status(400).json({
                 message: 'Invalid credentials.',
@@ -82,9 +78,6 @@ router.post('/login', (request, response) => {
 });
 
 router.get('/login', (request, response) => {
-    console.log('request.headers => ' + new Boolean(request.headers));
-    console.log('request.headers.authorization => ' + new Boolean(request.headers.authorization));
-    console.log(request.headers);
     if (request.headers && request.headers.authorization) {
         let authorization = request.headers.authorization.split(' ')[1];
         let decoded;
@@ -98,7 +91,7 @@ router.get('/login', (request, response) => {
         let userId = decoded._id;
 
         AccessUser.findOne({_id: userId}).then(user => {
-            console.log('It was approved.');
+            console.log('Login request approved.');
             response.status(200).json(user);
         })
     } else {
@@ -118,17 +111,11 @@ router.get('/login', (request, response) => {
  * I don't know! Jeez!
  */
 router.get('/logout', (request, response, next) => {
-    if (request.session) {
-        request.logout();
-        request.session.destroy((err) => {
-            go_away_err(err);
-
-            if (!err) {
-                response.status(200).clearCookie('expression').json({message: "You have been logged out."});
-            }
-        });
+    if (localStorage.token) {
+        localStorage.removeItem('token');
+        response.status(200).json({message: "You have been successfully logged out."});
     } else {
-        response.status(403).json({message: "You were not logged out (no session to destroy).", sorry: false});
+        response.status(400).json({message: "You are not logged in. You have not been logged out."});
     }
 
     return response;
