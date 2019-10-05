@@ -71,7 +71,7 @@ function App() {
     }
 
     return (
-        <Router>
+        <Router forceRefresh={true}>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className="wrapper">
                     <div className={"title"} data-text={"Quarx"}>

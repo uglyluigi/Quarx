@@ -11,6 +11,7 @@ import {withStyles} from '@material-ui/styles';
 import {PropTypes} from 'prop-types';
 import {getBaseUrl} from '../service';
 
+
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -149,9 +150,10 @@ export class LoginComponent extends React.Component {
             username: this.state.username,
             password: this.state.password,
         }).then(response => {
-            console.log(response.headers);
-            if (response.statusCode === 200) {
+            if (response.status === 200) {
                 this.setState({goodResponse: true});
+                localStorage.setItem('token', response.data.token);
+                this.props.history.push('/../control-panel');
             }
         }, err => {
             if (err.response.status === 401) {
