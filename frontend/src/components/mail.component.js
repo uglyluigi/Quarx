@@ -4,10 +4,10 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
-import {ThemeProvider} from "@material-ui/styles";
+import {ThemeProvider, withStyles} from "@material-ui/styles";
+import {PropTypes} from 'prop-types';
 
 const theme = createMuiTheme({
     palette: {
@@ -37,7 +37,7 @@ const theme = createMuiTheme({
     }
 });
 
-const useStyles = makeStyles({
+const useStyles = theme => ({
     '@global': {
         body: {
             backgroundColor: theme.palette.primary.main,
@@ -75,76 +75,85 @@ const useStyles = makeStyles({
     },
 });
 
-export default function SignIn() {
-    const classes = useStyles();
-    return (
-        <Container maxWidth="xs">
-            <div className={classes.alignment}>
-                <Avatar className={classes.avatar}>
-                    <MailOutlineIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <form className={classes.form}>
-                    <ThemeProvider theme={theme}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="name"
-                            label="Name"
-                            name="name"
-                            autoFocus
-                            InputLabelProps={{
-                                classes: {
-                                    root: classes.labelColor,
-                                    focused: classes.focused,
-                                },
-                            }}
-                            InputProps={{
-                                classes: {
-                                    root: classes.inputColor,
-                                    focused: classes.focused,
-                                    notchedOutline: classes.notchedOutline,
-                                }
-                            }}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            InputLabelProps={{
-                                classes: {
-                                    root: classes.labelColor,
-                                    focused: classes.focused,
-                                },
-                            }}
-                            InputProps={{
-                                classes: {
-                                    root: classes.inputColor,
-                                    focused: classes.focused,
-                                    notchedOutline: classes.notchedOutline,
-                                }
-                            }}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="secondary"
-                            className={classes.submit}
-                        >
-                            Sign Up
-                        </Button>
-                    </ThemeProvider>
-                </form>
-            </div>
-        </Container>
-    );
+export class MailComponent extends React.Component {
+    render () {
+        const {classes} = this.props;
+
+        return (
+            <Container maxWidth="xs">
+                <div className={classes.alignment}>
+                    <Avatar className={classes.avatar}>
+                        <MailOutlineIcon/>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign up
+                    </Typography>
+                    <form className={classes.form}>
+                        <ThemeProvider theme={theme}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Name"
+                                name="name"
+                                autoFocus
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelColor,
+                                        focused: classes.focused,
+                                    },
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        root: classes.inputColor,
+                                        focused: classes.focused,
+                                        notchedOutline: classes.notchedOutline,
+                                    }
+                                }}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                InputLabelProps={{
+                                    classes: {
+                                        root: classes.labelColor,
+                                        focused: classes.focused,
+                                    },
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        root: classes.inputColor,
+                                        focused: classes.focused,
+                                        notchedOutline: classes.notchedOutline,
+                                    }
+                                }}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="secondary"
+                                className={classes.submit}
+                            >
+                                Sign Up
+                            </Button>
+                        </ThemeProvider>
+                    </form>
+                </div>
+            </Container>
+        );
+    }
 }
+
+MailComponent.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(useStyles(theme))(MailComponent);
