@@ -55,23 +55,6 @@ module.exports = {
     },
 
     /**
-     * Function for handling unauthorized API calls.
-     *
-     * @param response the response sent to the unauthorized client.
-     * @return boolean if an unauthorized API call was made and was handled (and the response was modified).
-     *         false if the request is authorized.
-     */
-    handle_unauthorized_api_call: function (request, response) {
-        if (!request.isAuthenticated()) {
-            console.log(`${request.method} request to ${request.path} was DENIED (unauthorized). Ouch.`)
-            response.status(401).json({message: "You are not authorized to make that request.", sorry: false});
-            return true;
-        } else {
-            return false;
-        }
-    },
-
-    /**
      * A function that logs each request to the console.
      * Called when any request is received (only called in server.js)
      *
