@@ -1,8 +1,10 @@
-import {handle_unauthorized_api_call, go_away_err} from "./common"
+import {go_away_err} from "./common"
 
 const AccessUser = require('../../models/access-user');
 const passport = require('passport');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 /**
  * POST router to /api/login/signup
@@ -13,11 +15,7 @@ const router = require('express').Router();
  * we only want site admins to have special
  * access.
  */
-router.post('/signup', (request, response, next) => {
-    if (handle_unauthorized_api_call(request, response)) {
-        return response;
-    }
-
+router.post('/signup', passport.authenticate('jwt', {session: false}), (request, response, next) => {
     AccessUser.register(new AccessUser({username: request.body.username}), request.body.password, (err, user) => {
             if (err) {
                 response.status(500).json({err: err});
@@ -57,15 +55,48 @@ router.post('/signup', (request, response, next) => {
  * password, making this susceptible to MITM attacks, however if we configure SSL correctly on the actual
  * deployed site this might become a non-issue.
  */
-router.post('/login', passport.authenticate('local'), (request, response) => {
-    AccessUser.findOne({username: request.body.username}, (err, person) => {
-        request.login(person, function (err, something) {
-            console.log("Login request received");
-            go_away_err(err, response);
-        });
+router.post('/login', (request, response) => {
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            return response.status(400).json({
+                message: 'Invalid credentials.',
+                user: user
+            })
+        }
 
-        response.status(200).json({message: "You have been successfully logged in.", nice_one: true});
-    });
+        request.login(user, {session: false}, (err) => {
+            if (err) {
+                return response.status(500).json({error: err});
+            }
+
+            const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+            return response.status(200).json({user, token});
+        });
+    })(request, response);
+
+    return response;
+});
+
+router.get('/login', (request, response) => {
+    if (request.headers && request.headers.authorization) {
+        let authorization = request.headers.authorization.split(' ')[1];
+        let decoded;
+
+        try {
+            decoded = jwt.verify(authorization, process.env.JWT_SECRET)
+        } catch (e) {
+            return response.status(400).json({message: "Your token is invalid."});
+        }
+
+        let userId = decoded._id;
+
+        AccessUser.findOne({_id: userId}).then(user => {
+            console.log('Login request approved.');
+            response.status(200).json(user);
+        })
+    } else {
+        response.status(400).json({message: 'Invalid credentials.'});
+    }
 
     return response;
 });
@@ -80,17 +111,11 @@ router.post('/login', passport.authenticate('local'), (request, response) => {
  * I don't know! Jeez!
  */
 router.get('/logout', (request, response, next) => {
-    if (request.session) {
-        request.logout();
-        request.session.destroy((err) => {
-            go_away_err(err);
-
-            if (!err) {
-                response.status(200).clearCookie('expression').json({message: "You have been logged out."});
-            }
-        });
+    if (localStorage.token) {
+        localStorage.removeItem('token');
+        response.status(200).json({message: "You have been successfully logged out."});
     } else {
-        response.status(403).json({message: "You were not logged out (no session to destroy).", sorry: false});
+        response.status(400).json({message: "You are not logged in. You have not been logged out."});
     }
 
     return response;
