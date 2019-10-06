@@ -1,35 +1,160 @@
 import '../styles/material-fonts.css'
 import '../styles/home-component.css'
 import React, {Component} from 'react';
-import {Jumbotron, Container, Row, Image, Col} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
+import {makeStyles} from '@material-ui/core/styles';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Typography from '@material-ui/core/Typography';
+import image1 from '../assets/photos/3.jpg'
+import image2 from '../assets/photos/2.jpeg'
+import image3 from '../assets/photos/1.jpg'
+
+const images = [
+    {
+        url: image1,
+        link: '/music',
+        title: 'Music',
+        width: '50%',
+    },
+    {
+        url: image2,
+        link: '/mail',
+        title: 'Mailing list',
+        width: '50%',
+    },
+    {
+        url: image3,
+        link: '/merchandise',
+        title: 'Merch',
+        width: '50%',
+    },
+];
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        minWidth: 300,
+        width: '100%',
+    },
+    image: {
+        position: 'relative',
+        height: 600,
+        [theme.breakpoints.down('xs')]: {
+            width: '100% !important', // Overrides inline-style
+            height: '100% !important',
+        },
+        '&:hover, &$focusVisible': {
+            zIndex: 1,
+            '& $imageBackdrop': {
+                opacity: 0.15,
+            },
+            '& $imageMarked': {
+                opacity: 0,
+            },
+            '& $imageTitle': {
+                border: '4px solid currentColor',
+            },
+        },
+    },
+    focusVisible: {},
+    imageButton: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: theme.palette.common.white,
+    },
+    imageSrc: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 250%',
+    },
+    imageBackdrop: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: theme.palette.common.black,
+        opacity: 0.4,
+        transition: theme.transitions.create('opacity'),
+    },
+    imageTitle: {
+        position: 'relative',
+        padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+    },
+    imageMarked: {
+        height: 3,
+        width: 18,
+        backgroundColor: theme.palette.common.white,
+        position: 'absolute',
+        bottom: -2,
+        left: 'calc(50% - 9px)',
+        transition: theme.transitions.create('opacity'),
+    },
+}));
+
+export function ButtonBases() {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            {images.map(image => (
+                <ButtonBase
+                    focusRipple
+                    key={image.title}
+                    className={classes.image}
+                    focusVisibleClassName={classes.focusVisible}
+                    style={{
+                        width: image.width,
+                    }}
+                >
+                    <NavLink to={image.link} style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
+          <span
+              className={classes.imageSrc}
+              style={{
+                  backgroundImage: `url(${image.url})`,
+              }}
+          />
+
+                        <span className={classes.imageBackdrop}/>
+                        <span className={classes.imageButton}>
+
+            <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                className={classes.imageTitle}
+            >
+              {image.title}
+                <span className={classes.imageMarked}/>
+            </Typography>
+
+          </span>
+                    </NavLink>
+
+                </ButtonBase>
+
+
+            ))}
+        </div>
+    );
+}
 
 export default class Home extends Component {
     render() {
         return (
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <NavLink to="/music" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
-                            <Image thumbnail
-                                   src={"https://scontent-dfw5-2.xx.fbcdn.net/v/t1.0-9/49948596_1951615218468461_8226089796183785472_o.jpg?_nc_cat=105&_nc_oc=AQk2eUL7LDAaFza_8iLSRL7cK2L0p6APN2fBRT9ru530Az_SZvN54uR867ro_ZfWJvU&_nc_ht=scontent-dfw5-2.xx&oh=c4e5b68dcb4196863f0037f07edee30a&oe=5E06D282"}/>
-                        </NavLink>
-                    </Col>
-                    <Col>
-                        <Jumbotron>
-                            <div>
-                                <h2>Welcome!</h2>
-                                <p>Quarx is a band based in Baton Rouge, Louisiana.<br/>They make things like:<br/></p>
-                                <ul>
-                                    <li>Music</li>
-                                    <li>Friends</li>
-                                    <li>Music (mostly music)</li>
-                                </ul>
-                            </div>
-                        </Jumbotron>
-                    </Col>
-                </Row>
-            </Container>
+            <ButtonBases/>
         );
     }
 }

@@ -9,7 +9,7 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import {withStyles} from '@material-ui/styles';
 import {PropTypes} from 'prop-types';
-import {getBaseUrl} from '../service';
+import {getBaseUrl} from '../common';
 
 
 const theme = createMuiTheme({
@@ -154,6 +154,7 @@ export class LoginComponent extends React.Component {
                 this.setState({goodResponse: true});
                 localStorage.setItem('token', response.data.token);
                 this.props.history.push('/../control-panel');
+                window.location.reload();
             }
         }, err => {
             if (err.response.status === 401) {

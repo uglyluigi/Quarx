@@ -12,7 +12,8 @@ import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
-import {getBaseUrl} from "./service"
+import {getBaseUrl} from "./common"
+
 const axios = require('axios');
 
 const theme = createMuiTheme({
@@ -56,6 +57,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
 });
+
 function App() {
     const classes = useStyles();
     let loggedIn = false;
@@ -71,7 +73,7 @@ function App() {
     }
 
     return (
-        <Router forceRefresh={true}>
+        <Router>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className="wrapper">
                     <div className={"title"} data-text={"Quarx"}>
