@@ -190,16 +190,16 @@ export class MailComponent extends React.Component {
                         <ThemeProvider theme={theme}>
                             <TextField
                                 onChange={this.handleUserInput}
-                                error={this.state.phoneNumberError}
+                                error={this.state.emailError}
                                 onBlur={this.onLoseFocus}
+                                autoFocus
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="phoneNumber"
-                                label="Phone Number"
-                                name="phoneNumber"
-                                autoFocus
+                                id="email"
+                                label="Email Address"
+                                name="email"
                                 InputLabelProps={{
                                     classes: {
                                         root: classes.labelColor,
@@ -216,15 +216,14 @@ export class MailComponent extends React.Component {
                             />
                             <TextField
                                 onChange={this.handleUserInput}
-                                error={this.state.emailError}
+                                error={this.state.phoneNumberError}
                                 onBlur={this.onLoseFocus}
                                 variant="outlined"
                                 margin="normal"
-                                required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
+                                id="phoneNumber"
+                                label="Phone Number"
+                                name="phoneNumber"
                                 InputLabelProps={{
                                     classes: {
                                         root: classes.labelColor,
