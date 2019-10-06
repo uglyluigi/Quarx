@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider, withStyles} from "@material-ui/styles";
 import {PropTypes} from 'prop-types';
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+
 
 const theme = createMuiTheme({
     palette: {
@@ -76,6 +78,72 @@ const useStyles = theme => ({
 });
 
 export class MailComponent extends React.Component {
+    constructor (props) {
+        super(props);
+
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.validateField = this.validateField.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.validateForm = this.validateForm.bind(this);
+
+        this.state = {
+            email: '',
+            phoneNumber: '',
+            emailValid: false,
+            phoneNumberValid: false,
+            formValid: false
+        }
+    }
+
+    handleUserInput (e) {
+        e.preventDefault();
+
+        const name = e.target.name;
+        const value = e.target.value;
+
+        this.setState({[name]: value}, () => {
+            this.validateField(name, value);
+        })
+    }
+
+    validateField (name, value) {
+        let emailValid = this.state.emailValid;
+        let phoneValid = this.state.phoneNumberValid;
+        console.log(`${name} => ${value}`);
+        
+        switch (name) {
+            case "email":
+                let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                emailValid = regex.test(value.toLowerCase());
+                break;
+            case "phoneNumber":
+                let pn_obj;
+
+                try {
+                    pn_obj = phoneUtil.parse(value, 'US');
+                } catch (e) {
+                    phoneValid = false;
+                    return;
+                }
+
+                phoneValid = phoneUtil.isValidNumber(pn_obj);
+                break;
+        }
+
+        this.setState({emailValid: emailValid, phoneNumberValid: phoneValid}, () => this.validateForm());
+    }
+
+    onSubmit (e) {
+        e.preventDefault();
+        const axios = require('axios');
+
+
+    }
+
+    validateForm () {
+        this.setState({formValid: this.state.emailValid && this.state.phoneNumberValid})
+    }
+
     render () {
         const {classes} = this.props;
 
@@ -91,13 +159,14 @@ export class MailComponent extends React.Component {
                     <form className={classes.form}>
                         <ThemeProvider theme={theme}>
                             <TextField
+                                onChange={this.handleUserInput}
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="name"
-                                label="Name"
-                                name="name"
+                                id="phoneNumber"
+                                label="Phone Number"
+                                name="phoneNumber"
                                 autoFocus
                                 InputLabelProps={{
                                     classes: {
@@ -114,6 +183,7 @@ export class MailComponent extends React.Component {
                                 }}
                             />
                             <TextField
+                                onChange={this.handleUserInput}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -141,6 +211,7 @@ export class MailComponent extends React.Component {
                                 variant="contained"
                                 color="secondary"
                                 className={classes.submit}
+                                disabled={!this.state.formValid}
                             >
                                 Sign Up
                             </Button>
