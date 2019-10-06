@@ -89,6 +89,7 @@ const useStyles = theme => ({
         color: 'white'
     },
 });
+
 const useStyles1 = makeStyles(theme => ({
     success: {
         backgroundColor: green[600],
@@ -114,6 +115,7 @@ const useStyles1 = makeStyles(theme => ({
         alignItems: 'center',
     },
 }));
+
 const variantIcon = {
     success: CheckCircleIcon,
     warning: WarningIcon,
@@ -175,10 +177,18 @@ export function CustomizedSnackbars() {
         setOpen(false);
     };
 
+    /**
+     *  variant for snackbar = success, warning, error, or info
+     */
+
     return (
         <div>
-            <Button variant="outlined" className={classes.margin} onClick={handleClick}>
-                Open success snackbar
+
+            <Button variant = "contained"
+                    className={classes.margin}
+                    onClick={handleClick}
+                    color = "secondary">
+                Open snacks
             </Button>
             <Snackbar
                 anchorOrigin={{
@@ -191,8 +201,8 @@ export function CustomizedSnackbars() {
             >
                 <MySnackbarContentWrapper
                     onClose={handleClose}
-                    variant="success"
-                    message="This is a success message!"
+                    variant="error"
+                    message="Please enter a valid Email and phone number :))))"
                 />
             </Snackbar>
         </div>
@@ -366,6 +376,7 @@ export class MailComponent extends React.Component {
                                 color="secondary"
                                 className={classes.submit}
                                 disabled={!this.state.formValid}
+                                onClick={this.handleClick}
                             >
                                 Sign Up
                             </Button>
