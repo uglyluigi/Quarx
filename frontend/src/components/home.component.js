@@ -1,14 +1,14 @@
 import '../styles/material-fonts.css'
 import '../styles/home-component.css'
 import React, {Component} from 'react';
-import {Jumbotron, Container, Row, Image, Col} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import image1 from '../assets/photos/1.jpg'
+import image1 from '../assets/photos/3.jpg'
 import image2 from '../assets/photos/2.jpeg'
-import image3 from '../assets/photos/3.jpg'
+import image3 from '../assets/photos/1.jpg'
 
 const images = [
     {
@@ -127,8 +127,8 @@ export function ButtonBases() {
               }}
           />
 
-                    <span className={classes.imageBackdrop} />
-                    <span className={classes.imageButton}>
+                        <span className={classes.imageBackdrop}/>
+                        <span className={classes.imageButton}>
 
             <Typography
                 component="span"
@@ -137,7 +137,7 @@ export function ButtonBases() {
                 className={classes.imageTitle}
             >
               {image.title}
-                <span className={classes.imageMarked} />
+                <span className={classes.imageMarked}/>
             </Typography>
 
           </span>
@@ -154,13 +154,7 @@ export function ButtonBases() {
 export default class Home extends Component {
     render() {
         return (
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <ButtonBases/>
-                    </Col>
-                </Row>
-            </Container>
+            <ButtonBases/>
         );
     }
 }
