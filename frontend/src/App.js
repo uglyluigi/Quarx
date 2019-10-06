@@ -12,7 +12,7 @@ import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
-import {getBaseUrl} from "./service"
+import {getBaseUrl} from "./common"
 
 const axios = require('axios');
 
