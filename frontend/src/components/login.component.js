@@ -154,6 +154,7 @@ export class LoginComponent extends React.Component {
                 this.setState({goodResponse: true});
                 localStorage.setItem('token', response.data.token);
                 this.props.history.push('/../control-panel');
+                window.location.reload();
             }
         }, err => {
             if (err.response.status === 401) {
