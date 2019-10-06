@@ -5,10 +5,10 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {createMuiTheme} from "@material-ui/core/styles";
+import {createMuiTheme, makeStyles} from "@material-ui/core/styles";
 import {ThemeProvider, withStyles} from "@material-ui/styles";
 import {PropTypes} from 'prop-types';
-import {getBaseUrl} from './../service';
+import {getBaseUrl, runCallbackIfThere} from '../common';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -19,7 +19,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
-import {makeStyles} from '@material-ui/core/styles';
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
@@ -125,7 +124,7 @@ const variantIcon = {
 
 function MySnackbarContentWrapper(props) {
     const classes = useStyles1();
-    const {className, message, onClose, variant, ...other} = props;
+    const {className, message, onClose, variant, open, ...other} = props;
     const Icon = variantIcon[variant];
 
     return (
@@ -134,15 +133,11 @@ function MySnackbarContentWrapper(props) {
             aria-describedby="client-snackbar"
             message={
                 <span id="client-snackbar" className={classes.message}>
-          <Icon className={clsx(classes.icon, classes.iconVariant)}/>
+                    <Icon className={clsx(classes.icon, classes.iconVariant)}/>
                     {message}
-        </span>
+                </span>
             }
-            action={[
-                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-                    <CloseIcon className={classes.icon}/>
-                </IconButton>,
-            ]}
+            open={open}
             {...other}
         />
     );
@@ -161,21 +156,9 @@ const useStyles2 = makeStyles(theme => ({
     },
 }));
 
-export function CustomizedSnackbars() {
+export function CustomizedSnackbars(props) {
     const classes = useStyles2();
-    const [open, setOpen] = React.useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
+    let {message, open, variant} = props;
 
     /**
      *  variant for snackbar = success, warning, error, or info
@@ -183,13 +166,6 @@ export function CustomizedSnackbars() {
 
     return (
         <div>
-
-            <Button variant="contained"
-                    className={classes.margin}
-                    onClick={handleClick}
-                    color="secondary">
-                Open snacks
-            </Button>
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
@@ -197,12 +173,10 @@ export function CustomizedSnackbars() {
                 }}
                 open={open}
                 autoHideDuration={6000}
-                onClose={handleClose}
             >
                 <MySnackbarContentWrapper
-                    onClose={handleClose}
-                    variant="error"
-                    message="Please enter a valid Email and phone number :))))"
+                    variant={variant}
+                    message={message}
                 />
             </Snackbar>
         </div>
@@ -218,6 +192,7 @@ export class MailComponent extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.validateForm = this.validateForm.bind(this);
         this.onLoseFocus = this.onLoseFocus.bind(this);
+        this.flashSnackBar = this.flashSnackBar.bind(this);
 
         this.state = {
             email: '',
@@ -226,7 +201,10 @@ export class MailComponent extends React.Component {
             phoneNumberValid: false,
             phoneNumberError: false,
             emailError: false,
-            formValid: false
+            formValid: false,
+            showSnackBar: false,
+            snackBarMessage: '',
+            snackBarVariant: 'info'
         }
     }
 
@@ -241,7 +219,13 @@ export class MailComponent extends React.Component {
         })
     }
 
-    validateField(name, value) {
+    /**
+     *
+     * @param name
+     * @param value
+     * @param callback the function called with the result of the verification of whatever field is specified.
+     */
+    validateField (name, value, callback) {
         let emailValid = this.state.emailValid;
         let phoneValid = this.state.phoneNumberValid;
 
@@ -251,22 +235,39 @@ export class MailComponent extends React.Component {
             case "email":
                 let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 emailValid = regex.test(value.toLowerCase());
+                runCallbackIfThere(callback, emailValid);
                 break;
             case "phoneNumber":
+                if (value.length === 0) {
+                    phoneValid = true;
+                    runCallbackIfThere(callback, true);
+                    return;
+                }
+
                 let pn_obj;
 
                 try {
                     pn_obj = phoneUtil.parse(value, 'US');
                 } catch (e) {
                     phoneValid = false;
+                    runCallbackIfThere(callback, false);
                     return;
                 }
 
                 phoneValid = phoneUtil.isValidNumber(pn_obj);
+                runCallbackIfThere(callback, phoneValid);
                 break;
         }
 
         this.setState({emailValid: emailValid, phoneNumberValid: phoneValid}, () => this.validateForm());
+    }
+
+    flashSnackBar (variant, message, howLong=5000) {
+        console.log(`Flashing snackbar with variant ${variant}`);
+        this.setState({snackBarVariant: variant, snackBarMessage: message, showSnackBar: true});
+        setTimeout(() => {
+            this.setState({showSnackBar: false});
+        }, howLong);
     }
 
     onSubmit(e) {
@@ -277,9 +278,21 @@ export class MailComponent extends React.Component {
             email: this.state.email,
             phone_number: this.state.phoneNumber,
         }).then(response => {
-            console.log(response);
-            //TODO add snackbar for various error cases
-        })
+            switch (response.status) {
+                case 201:
+                    this.flashSnackBar("success", "Thanks for registering!");
+                    break;
+                case 400:
+                    this.flashSnackBar("info", "You\'re already registered!");
+                    break;
+                default:
+                    this.flashSnackBar("error", "An unknown error has occurred. For shame!");
+                    break;
+            }
+        }, err => {
+            this.flashSnackBar("error", "An unknown error has occurred. For shame!");
+            console.log("Error occurred on submission: " + err);
+        });
     }
 
     onLoseFocus(e) {
@@ -293,8 +306,11 @@ export class MailComponent extends React.Component {
                 emailError = !this.state.emailValid;
                 break;
             case "phoneNumber":
-                this.validateField(target, this.state.phoneNumber);
-                phoneNumberError = !this.state.phoneNumberValid;
+                this.validateField(target, this.state.phoneNumber, result => {
+                    if (!result) {
+                        phoneNumberError = true;
+                    }
+                });
                 break;
         }
 
@@ -302,7 +318,7 @@ export class MailComponent extends React.Component {
     }
 
     validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.phoneNumberValid})
+        this.setState({formValid: this.state.emailValid && (this.state.phoneNumberValid || this.state.phoneNumber.length === 0)})
     }
 
     render() {
@@ -380,7 +396,7 @@ export class MailComponent extends React.Component {
                             >
                                 Sign Up
                             </Button>
-                            <CustomizedSnackbars/>
+                            <CustomizedSnackbars variant={this.state.snackBarVariant} message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
                         </ThemeProvider>
                     </form>
                 </div>
