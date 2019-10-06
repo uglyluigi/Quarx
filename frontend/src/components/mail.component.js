@@ -20,7 +20,12 @@ import WarningIcon from '@material-ui/icons/Warning';
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
+//----BEGIN MUI MAGIC----
 
+/**
+ * The theme properties for this file.
+ * @type {Theme}
+ */
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -49,6 +54,11 @@ const theme = createMuiTheme({
     }
 });
 
+/**
+ * The style rules for this particular component, and the text fields.
+ * @param theme the theme object created by MUI.
+ * @returns {{inputColor: {color: string}, "@global": {body: {backgroundColor: *}}, form: {marginTop: *}, submit: {margin: *, color: string}, focused: {color: string}, avatar: {margin: *, backgroundColor: *}, notchedOutline: {borderColor: string, borderWidth: string}, alignment: {alignItems: string, flexDirection: string, display: string, marginTop: *}, labelColor: {color: string}}}
+ */
 const useStyles = theme => ({
     '@global': {
         body: {
@@ -87,6 +97,11 @@ const useStyles = theme => ({
     },
 });
 
+/**
+ * The style rules for each snackbar variant.
+ *
+ * @type {StylesHook<Styles<Theme, {}, string>>}
+ */
 const useStyles1 = makeStyles(theme => ({
     success: {
         backgroundColor: green[600],
@@ -120,6 +135,13 @@ const variantIcon = {
     info: InfoIcon,
 };
 
+/**
+ * To be perfectly honest I'm not really sure what the point of this is.
+ *
+ * @param props the properties passed to the content wrapper from the react DOM.
+ * @returns {*} I.D.K.
+ * @constructor
+ */
 function SnackbarContentWrapper(props) {
     const classes = useStyles1();
     const {className, message, onClose, variant, open, ...other} = props;
@@ -181,6 +203,8 @@ export function CustomizedSnackbars(props) {
     );
 }
 
+//----END MUI MAGIC----
+
 export class MailComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -206,6 +230,10 @@ export class MailComponent extends React.Component {
         }
     }
 
+    /**
+     * The function called each time a character is entered into a text field.
+     * @param e the target event fired each time a character is entered into a text field.
+     */
     handleUserInput(e) {
         e.preventDefault();
 
@@ -218,10 +246,15 @@ export class MailComponent extends React.Component {
     }
 
     /**
+     * Function for validating each of the text fields.
      *
-     * @param name
-     * @param value
+     * @param name the name of the field to validate (should be the same as its ID).
+     * @param value the value of the field.
      * @param callback the function called with the result of the verification of whatever field is specified.
+     *        This is only used to capture the phone number verification result so the text field is only
+     *        set to its error state if unfocused with something in it since phone numbers are optional.
+     *        But, if I ever need to use it for the email result, I can do that, too. I just don't
+     *        anywhere in this file.
      */
     validateField(name, value, callback) {
         let emailValid = this.state.emailValid;
@@ -260,6 +293,13 @@ export class MailComponent extends React.Component {
         this.setState({emailValid: emailValid, phoneNumberValid: phoneValid}, () => this.validateForm());
     }
 
+    /**
+     * The function you would call when flashing the snack bar on screen is something you want to do.
+     *
+     * @param variant the variant of the snack bar: can be success, error, info, or warning.
+     * @param message the message the snackbar is to contain.
+     * @param howLong the duration, in ms, for which the snack bar should remain on screen.
+     */
     flashSnackBar(variant, message, howLong = 5000) {
         console.log(`Flashing snackbar with variant ${variant}`);
         this.setState({snackBarVariant: variant, snackBarMessage: message, showSnackBar: true});
@@ -268,6 +308,11 @@ export class MailComponent extends React.Component {
         }, howLong);
     }
 
+    /**
+     * The function that handles submission events when the "sign up" button is clicked.
+     *
+     * @param e the react event passed to the function.
+     */
     onSubmit(e) {
         e.preventDefault();
         const axios = require('axios');
@@ -293,6 +338,11 @@ export class MailComponent extends React.Component {
         });
     }
 
+    /**
+     * The function called when either text field loses focus.
+     *
+     * @param e you ought to know what this is by now.
+     */
     onLoseFocus(e) {
         let emailError = this.state.emailError;
         let phoneNumberError = this.state.phoneNumberError;
@@ -315,6 +365,10 @@ export class MailComponent extends React.Component {
         this.setState({emailError: emailError, phoneNumberError: phoneNumberError});
     }
 
+    /**
+     * The function called to update the formValid state according to the state of the email and phone number
+     * text fields.
+     */
     validateForm() {
         this.setState({formValid: this.state.emailValid && (this.state.phoneNumberValid || this.state.phoneNumber.length === 0)})
     }
