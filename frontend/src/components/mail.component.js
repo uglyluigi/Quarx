@@ -13,9 +13,7 @@ import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
 import {amber, green} from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -122,7 +120,7 @@ const variantIcon = {
     info: InfoIcon,
 };
 
-function MySnackbarContentWrapper(props) {
+function SnackbarContentWrapper(props) {
     const classes = useStyles1();
     const {className, message, onClose, variant, open, ...other} = props;
     const Icon = variantIcon[variant];
@@ -143,7 +141,7 @@ function MySnackbarContentWrapper(props) {
     );
 }
 
-MySnackbarContentWrapper.propTypes = {
+SnackbarContentWrapper.propTypes = {
     className: PropTypes.string,
     message: PropTypes.string,
     onClose: PropTypes.func,
@@ -174,7 +172,7 @@ export function CustomizedSnackbars(props) {
                 open={open}
                 autoHideDuration={6000}
             >
-                <MySnackbarContentWrapper
+                <SnackbarContentWrapper
                     variant={variant}
                     message={message}
                 />
@@ -225,7 +223,7 @@ export class MailComponent extends React.Component {
      * @param value
      * @param callback the function called with the result of the verification of whatever field is specified.
      */
-    validateField (name, value, callback) {
+    validateField(name, value, callback) {
         let emailValid = this.state.emailValid;
         let phoneValid = this.state.phoneNumberValid;
 
@@ -262,7 +260,7 @@ export class MailComponent extends React.Component {
         this.setState({emailValid: emailValid, phoneNumberValid: phoneValid}, () => this.validateForm());
     }
 
-    flashSnackBar (variant, message, howLong=5000) {
+    flashSnackBar(variant, message, howLong = 5000) {
         console.log(`Flashing snackbar with variant ${variant}`);
         this.setState({snackBarVariant: variant, snackBarMessage: message, showSnackBar: true});
         setTimeout(() => {
@@ -396,7 +394,8 @@ export class MailComponent extends React.Component {
                             >
                                 Sign Up
                             </Button>
-                            <CustomizedSnackbars variant={this.state.snackBarVariant} message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
+                            <CustomizedSnackbars variant={this.state.snackBarVariant}
+                                                 message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
                         </ThemeProvider>
                     </form>
                 </div>
