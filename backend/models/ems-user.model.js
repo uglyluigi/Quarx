@@ -26,7 +26,15 @@ function validateEmail(value) {
 }
 
 function validatePhoneNumber(value) {
-    return phoneUtil.isValidNumber(phoneUtil.parse(value, 'US'));
+    let pn_obj;
+
+    try {
+        pn_obj = phoneUtil.parse(value, 'US');
+    } catch (e) {
+        return false;
+    }
+
+    return phoneUtil.isValidNumber(pn_obj);
 }
 
 const EMSUser = mongoose.model('ems-user', EMSUserSchema);
