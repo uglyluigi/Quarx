@@ -17,24 +17,24 @@ require('dotenv').config();
  */
 router.post('/signup', passport.authenticate('jwt', {session: false}), (request, response, next) => {
     AccessUser.register(new AccessUser({username: request.body.username}), request.body.password, (err, user) => {
-            if (err) {
-                response.status(500).json({err: err});
-            } else {
-                passport.authenticate('local')(request, response, () => {
-                    AccessUser.findOne({username: request.body.username}, (err, person) => {
-                        go_away_err(err, response);
+        if (err) {
+            response.status(500).json({err: err});
+        } else {
+            passport.authenticate('local')(request, response, () => {
+                AccessUser.findOne({username: request.body.username}, (err, person) => {
+                    go_away_err(err, response);
 
-                        if (!err) {
-                            response.status(200).json({
-                                message: "You\'ve been successfully logged in.",
-                                success: true,
-                                happy_4_u: true
-                            });
-                        }
-                    })
-                });
-            }
-        });
+                    if (!err) {
+                        response.status(200).json({
+                            message: "You\'ve been successfully logged in.",
+                            success: true,
+                            happy_4_u: true
+                        });
+                    }
+                })
+            });
+        }
+    });
 
     return response;
 });

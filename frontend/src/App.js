@@ -13,6 +13,7 @@ import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./service"
+
 const axios = require('axios');
 
 const theme = createMuiTheme({
@@ -56,6 +57,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
 });
+
 function App() {
     const classes = useStyles();
     let loggedIn = false;

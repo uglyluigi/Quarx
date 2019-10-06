@@ -184,10 +184,10 @@ export function CustomizedSnackbars() {
     return (
         <div>
 
-            <Button variant = "contained"
+            <Button variant="contained"
                     className={classes.margin}
                     onClick={handleClick}
-                    color = "secondary">
+                    color="secondary">
                 Open snacks
             </Button>
             <Snackbar
