@@ -86,12 +86,15 @@ export class MailComponent extends React.Component {
         this.validateField = this.validateField.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.validateForm = this.validateForm.bind(this);
+        this.onLoseFocus = this.onLoseFocus.bind(this);
 
         this.state = {
             email: '',
             phoneNumber: '',
             emailValid: false,
             phoneNumberValid: false,
+            phoneNumberError: false,
+            emailError: false,
             formValid: false
         }
     }
@@ -110,6 +113,7 @@ export class MailComponent extends React.Component {
     validateField (name, value) {
         let emailValid = this.state.emailValid;
         let phoneValid = this.state.phoneNumberValid;
+
         console.log(`${name} => ${value}`);
 
         switch (name) {
@@ -143,12 +147,27 @@ export class MailComponent extends React.Component {
             phone_number: this.state.phoneNumber,
         }).then(response => {
             console.log(response);
-            //TODO add indicators for successful sign up,
-            //like maybe turning the outlines green whenever
-            //the fields contain valid content/showing appropriate
-            //error messages next to the fields when the content is
-            //wrong. Up to you PARDNER
+            //TODO add snackbar for various error cases
         })
+    }
+
+    onLoseFocus (e) {
+        let emailError = this.state.emailError;
+        let phoneNumberError = this.state.phoneNumberError;
+        const target = e.target.name;
+
+        switch (target) {
+            case "email" :
+                this.validateField(target, this.state.email);
+                emailError = !this.state.emailValid;
+                break;
+            case "phoneNumber":
+                this.validateField(target, this.state.phoneNumber);
+                phoneNumberError = !this.state.phoneNumberValid;
+                break;
+        }
+
+        this.setState({emailError: emailError, phoneNumberError: phoneNumberError});
     }
 
     validateForm () {
@@ -171,6 +190,8 @@ export class MailComponent extends React.Component {
                         <ThemeProvider theme={theme}>
                             <TextField
                                 onChange={this.handleUserInput}
+                                error={this.state.phoneNumberError}
+                                onBlur={this.onLoseFocus}
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -195,6 +216,8 @@ export class MailComponent extends React.Component {
                             />
                             <TextField
                                 onChange={this.handleUserInput}
+                                error={this.state.emailError}
+                                onBlur={this.onLoseFocus}
                                 variant="outlined"
                                 margin="normal"
                                 required
