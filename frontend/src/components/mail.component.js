@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
 import {ThemeProvider, withStyles} from "@material-ui/styles";
 import {PropTypes} from 'prop-types';
+import {getBaseUrl} from './../service';
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 
@@ -110,7 +111,7 @@ export class MailComponent extends React.Component {
         let emailValid = this.state.emailValid;
         let phoneValid = this.state.phoneNumberValid;
         console.log(`${name} => ${value}`);
-        
+
         switch (name) {
             case "email":
                 let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -137,7 +138,17 @@ export class MailComponent extends React.Component {
         e.preventDefault();
         const axios = require('axios');
 
-
+        axios.post(getBaseUrl() + "/api/event-messenger", {
+            email: this.state.email,
+            phone_number: this.state.phoneNumber,
+        }).then(response => {
+            console.log(response);
+            //TODO add indicators for successful sign up,
+            //like maybe turning the outlines green whenever
+            //the fields contain valid content/showing appropriate
+            //error messages next to the fields when the content is
+            //wrong. Up to you PARDNER
+        })
     }
 
     validateForm () {
@@ -156,7 +167,7 @@ export class MailComponent extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form className={classes.form}>
+                    <form className={classes.form} onSubmit={this.onSubmit}>
                         <ThemeProvider theme={theme}>
                             <TextField
                                 onChange={this.handleUserInput}
