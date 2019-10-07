@@ -17,8 +17,6 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import Link from "@material-ui/core/Link";
-import Avatar from "@material-ui/core/Avatar";
-
 const axios = require('axios');
 
 const theme = createMuiTheme({
@@ -109,7 +107,6 @@ function App() {
                 </div>
             </NavLink>
             <Navbar/>
-            <br/>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
             <Route path="/merchandise" exact component={Merchandise}/>
