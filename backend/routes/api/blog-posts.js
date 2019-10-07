@@ -18,21 +18,23 @@ router.post('/', passport.authenticate('jwt', {session: false}), (request, respo
     const title = request.body.title;
     const body = request.body.body;
     const images = request.body.images;
+    const new_blog_post = new BlogPost({title: title, body: body, images: images, hidden: false});
 
-    if (!title || !body || !images) {
-        return response.status(400).json({message: "Your blog post must contain a title, body, and array of images (even if it's empty).", sorry: false});
-    }
+    new_blog_post
+        .save()
+        .then(() => {
+            response.status(201).json({message: "Post successfully created."})
+        }, (err) => {
+            let errors = [];
+            let err_i = 0;
 
-    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
-        .then(connection => {
-            connection
-                .db(DB_CLUSTER_NAME)
-                .collection(BLOG_COLLECTION_NAME)
-                .insert({title: title, body: body, images: images, hidden: false})
-                .then(out => response.status(201).json({message: "Success", post: out.ops}))
-                .then(() => connection.close());
-        })
-        .catch(err => handle_mongo_error(response, err));
+            for (let error in err.errors) {
+                let jobj_err = err.errors[error];
+                errors[err_i++] = error + ' error: ' + jobj_err.message;
+            }
+
+            response.status(400).json({err: errors});
+        });
 
     return response;
 });
@@ -47,19 +49,22 @@ router.get('/', (request, response) => {
     const get_all = request.query['all'];
 
     if (get_all) {
-        MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
-            .then(connection => {
-                connection
-                    .db(DB_CLUSTER_NAME)
-                    .collection(BLOG_COLLECTION_NAME)
-                    .find()
-                    .toArray()
-                    .then(all_posts => response.status(200).json(all_posts))
-                    .then(() => connection.close());
-            })
-            .catch(err => handle_mongo_error(response, err));
+        BlogPost
+            .find({})
+            .then((docs, err) => {
+                if (err) {
+                    console.log(err);
+                    response.status(500).json({err: err});
+                } else {
+                    if (docs.length === 0) {
+                        response.status(200).json({message: "There are currently no posts."});
+                    } else {
+                        response.status(200).json({posts: docs});
+                    }
+                }
+            });
     } else {
-        response.status(400).json({message: "Your GET request is being made at the root URI but does not contain the proper body."})
+        response.status(400).json({message: "GET ALL requests need a true get_all query parameter."})
     }
 
     return response;
@@ -76,24 +81,19 @@ router.get('/:postId', (request, response) => {
         return response;
     }
 
-    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
-        .then(connection => {
-            connection
-                .db(DB_CLUSTER_NAME)
-                .collection(BLOG_COLLECTION_NAME)
-                .findOne({_id: ObjectId(postId)})
-                .then(out => {
-                    if (out != null) {
-                        response.status(200).json(out);
-                    } else {
-                        response.status(404).json({
-                            message: `Post with ID ${postId} does not exist in this DB.`,
-                            sorry: true
-                        });
-                    }
-                })
-                .then(() => connection.close())
-                .catch(err => handle_mongo_error(response, err));
+    BlogPost
+        .findOne({_id: ObjectId(postId)})
+        .then((docs, err) => {
+            if (err) {
+                console.log(err);
+                response.status(500).json({err: err});
+            } else {
+                if (docs) {
+                    response.status(200).json({post: docs});
+                } else {
+                    response.status(404).json({message: "No post in the database has that ID."});
+                }
+            }
         });
 
     return response;
@@ -109,15 +109,15 @@ router.delete('/:postId', passport.authenticate('jwt', {session: false}), (reque
         return response;
     }
 
-    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
-        .then(connection => {
-            connection
-                .db(DB_CLUSTER_NAME)
-                .collection(BLOG_COLLECTION_NAME)
-                .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
-                .then(out => produce_update_response(response, out, postId))
-                .then(() => connection.close());
-        }).catch(err => handle_mongo_error(response, err));
+    BlogPost
+        .updateOne({_id: ObjectId(postId)}, {$set: {hidden: true}})
+        .then((docs, err) => {
+            if (err) {
+                response.status(500).json({err: err});
+            } else {
+                response.status(200).json({message: `Post ${postId} hidden.`});
+            }
+        });
 
     return response;
 });
@@ -126,10 +126,6 @@ router.delete('/:postId', passport.authenticate('jwt', {session: false}), (reque
  * Router for PUT requests at /api/blog-posts/:postId
  */
 router.put('/:postId', passport.authenticate('jwt', {session: false}), (request, response) => {
-    if (handle_unauthorized_api_call(request, response)) {
-        return response;
-    }
-
     const postId = request.params.postId;
 
     const new_title = request.body.title;
@@ -163,16 +159,16 @@ router.put('/:postId', passport.authenticate('jwt', {session: false}), (request,
         return response.status(304).json({message: "Your PUT request doesn\'t attempt to update anything."});
     }
 
-    MongoClient.connect(DB_URI, MDB_CLIENT_OPS)
-        .then(connection => {
-            connection
-                .db(DB_CLUSTER_NAME)
-                .collection(BLOG_COLLECTION_NAME)
-                .updateOne({_id: ObjectId(postId)}, {$set: doc})
-                .then(out => produce_update_response(response, out, postId))
-                .then(() => connection.close());
+    BlogPost
+        .updateOne({_id: ObjectId(postId)}, {$set: doc})
+        .then((docs, err) => {
+            if (err) {
+                console.log(err);
+                response.status(500).json({err: err});
+            } else {
+                response.status(200).json({message: `Post ${postId} has been updated.`});
+            }
         })
-        .catch(err => handle_mongo_error(response, err));
 
     return response;
 });
