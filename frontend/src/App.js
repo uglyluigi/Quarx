@@ -13,6 +13,11 @@ import Navbar from "./components/navbar.component"
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import Link from "@material-ui/core/Link";
+import Avatar from "@material-ui/core/Avatar";
 
 const axios = require('axios');
 
@@ -22,7 +27,7 @@ const theme = createMuiTheme({
             main: '#171717',
         },
         secondary: {
-            main: '#282c34',
+            main: '#e46645',
         },
     },
     textPrimary: {
@@ -41,6 +46,12 @@ const theme = createMuiTheme({
                 }
             }
         },
+        MuiIcon:{
+            root:{
+                color: 'white !important'
+            }
+        },
+
     }
 });
 
@@ -49,6 +60,7 @@ const useStyles = makeStyles({
         body: {
             backgroundColor: theme.palette.primary.main,
         },
+
     },
     alignment: {
         marginTop: theme.spacing(5),
@@ -74,6 +86,21 @@ function App() {
 
     return (
         <Router>
+            <Link
+                href={'https://www.facebook.com/Quarxband/'}>
+                <FacebookIcon
+                    color='secondary'/>
+            </Link>
+            <Link
+                href={'https://twitter.com/quarxband?lang=en'}>
+                <TwitterIcon
+                    color='secondary'/>
+            </Link>
+            <Link
+                href={'https://www.instagram.com/quarxband/'}>
+                <InstagramIcon
+                    color='secondary'/>
+            </Link>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className="wrapper">
                     <div className={"title"} data-text={"Quarx"}>
