@@ -1,12 +1,10 @@
-import {DB_URI, DB_CLUSTER_NAME, BLOG_COLLECTION_NAME, MDB_CLIENT_OPS} from "../../constants";
-import {produce_update_response, validate_objid_and_respond, handle_mongo_error, handle_unauthorized_api_call} from "./common"
+import {validate_objid_and_respond} from "./common"
 
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const BlogPost = require('../../models/blog-post.model');
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
-const MongoClient = mongodb.MongoClient;
 const empty = require('is-empty');
 const axios = require('axios');
 const passport = require('passport');
@@ -156,7 +154,7 @@ router.put('/:postId', passport.authenticate('jwt', {session: false}), (request,
     }
 
     if (empty(doc)) {
-        return response.status(304).json({message: "Your PUT request doesn\'t attempt to update anything."});
+        return response.sendStatus(304);
     }
 
     BlogPost
@@ -166,9 +164,15 @@ router.put('/:postId', passport.authenticate('jwt', {session: false}), (request,
                 console.log(err);
                 response.status(500).json({err: err});
             } else {
-                response.status(200).json({message: `Post ${postId} has been updated.`});
+                if (docs.n === 0) {
+                    response.status(404).json({message: "That post does not exist in the DB."});
+                } else if (docs.nModified === 0) {
+                    response.sendStatus(304);
+                } else if (docs.n === 1 && docs.nModified === 1) {
+                    response.sendStatus(200);
+                }
             }
-        })
+        });
 
     return response;
 });
