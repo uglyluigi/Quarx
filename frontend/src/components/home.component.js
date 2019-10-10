@@ -86,13 +86,14 @@ const useStyles = makeStyles(theme => ({
         top: 0,
         bottom: 0,
         backgroundColor: theme.palette.common.black,
-        opacity: 0.8,
+        opacity: .8,
         transition: theme.transitions.create('opacity'),
     },
     imageTitle: {
         position: 'relative',
+        top: -200,
         padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
-        fontSize: 50,
+        fontSize: 40,
     },
     imageMarked: {
         height: 3,
