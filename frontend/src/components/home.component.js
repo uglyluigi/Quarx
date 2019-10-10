@@ -6,7 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import image1 from '../assets/photos/31.jpg'
-import image2 from '../assets/photos/4.jpg'
+import image2 from '../assets/photos/41.jpg'
 import image3 from '../assets/photos/1.jpg'
 
 const images = [
@@ -75,6 +75,7 @@ const useStyles = makeStyles(theme => ({
         right: 10,
         top: 10,
         bottom: 10,
+        opacity: 0.7,
         backgroundSize: 'cover',
         backgroundPosition: 'center 100%',
     },
@@ -90,7 +91,7 @@ const useStyles = makeStyles(theme => ({
     },
     imageTitle: {
         position: 'relative',
-        top: -200,
+        top: -220,
         padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
         fontSize: 40,
     },
