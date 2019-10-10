@@ -18,7 +18,7 @@ export default class Music extends Component {
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen/>
 
-                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/0L7kVvJYdPE"
+                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/0L7kVvJYdPE" 
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen/>
