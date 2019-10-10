@@ -66,7 +66,8 @@ const useStyles = theme => ({
         },
     },
     alignment: {
-        marginTop: theme.spacing(5),
+        marginTop: theme.spacing(15),
+        marginBottom: theme.spacing(15),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

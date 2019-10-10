@@ -31,6 +31,7 @@ const images = [
 ];
 
 const useStyles = makeStyles(theme => ({
+
     root: {
         display: 'flex',
         minWidth: 300,
