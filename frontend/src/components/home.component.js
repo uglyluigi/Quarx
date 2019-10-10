@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         minWidth: 300,
         width: '100%',
+
     },
     image: {
         position: 'relative',
@@ -85,19 +86,20 @@ const useStyles = makeStyles(theme => ({
         top: 0,
         bottom: 0,
         backgroundColor: theme.palette.common.black,
-        opacity: 0.6,
+        opacity: 0.8,
         transition: theme.transitions.create('opacity'),
     },
     imageTitle: {
         position: 'relative',
         padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+        fontSize: 50,
     },
     imageMarked: {
         height: 3,
-        width: 18,
+        width: 180,
         backgroundColor: theme.palette.common.white,
         position: 'absolute',
-        bottom: -2,
+        bottom: -3,
         left: 'calc(50% - 90px)',
         transition: theme.transitions.create('opacity'),
     },
