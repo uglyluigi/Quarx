@@ -101,16 +101,16 @@ function App() {
                     color='secondary'/>
             </Link>
         </div>
+            <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
             <div className={"logo"} style={{
                 backgroundColor: '#FFEDD5',
             }}>
-                <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                     <Image  src={banner} fluid style={{
                         height: '50vw',
                     }}>
                     </Image>
-                </NavLink>
             </div>
+            </NavLink>
             <Navbar/>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
