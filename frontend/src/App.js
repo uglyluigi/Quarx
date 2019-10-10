@@ -17,6 +17,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import Link from "@material-ui/core/Link";
+import Image from "react-bootstrap/Image";
+import banner from './assets/photos/2.jpeg'
 const axios = require('axios');
 
 const theme = createMuiTheme({
@@ -61,10 +63,8 @@ const useStyles = makeStyles({
 
     },
     alignment: {
-        marginTop: theme.spacing(5),
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'left',
     },
 });
 
@@ -84,6 +84,7 @@ function App() {
 
     return (
         <Router>
+            <div className={classes.alignment}>
             <Link
                 href={'https://www.facebook.com/Quarxband/'}>
                 <FacebookIcon
@@ -99,13 +100,17 @@ function App() {
                 <InstagramIcon
                     color='secondary'/>
             </Link>
-            <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
-                <div className="wrapper">
-                    <div className={"title"} data-text={"Quarx"}>
-                        Quarx
-                    </div>
-                </div>
-            </NavLink>
+        </div>
+            <div className={"logo"} style={{
+                backgroundColor: '#FFEDD5',
+            }}>
+                <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
+                    <Image  src={banner} fluid style={{
+                        height: '50vw',
+                    }}>
+                    </Image>
+                </NavLink>
+            </div>
             <Navbar/>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>

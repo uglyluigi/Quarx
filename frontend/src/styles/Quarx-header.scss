@@ -38,14 +38,17 @@ $secondary: black;
   }
 }
 
-@keyframes sliding-background {
-  0%,
-  100% {
-    background-position: 0 60%;
-  }
-
-  50% {
-    background-position: 100% 60%;
-  }
+body {
+  background: #fff;
+  text-align: center;
 }
 
+.logo {
+  animation: colorRotate 7s linear infinite;
+}
+
+@keyframes colorRotate {
+  100% {
+    -webkit-filter: hue-rotate(360deg);
+  }
+}
