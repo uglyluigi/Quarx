@@ -1,5 +1,5 @@
-function getBaseUrl() {
-    return 'http://localhost:5000'
+function get_base_url_for_api_reqs() {
+    return 'http://localhost:5000';
 }
 
 function runCallbackIfThere(callback, params) {
@@ -8,4 +8,4 @@ function runCallbackIfThere(callback, params) {
     }
 }
 
-module.exports = {getBaseUrl, runCallbackIfThere};
+module.exports = {getBaseUrl: get_base_url_for_api_reqs, runCallbackIfThere};
