@@ -34,7 +34,13 @@ export default class Gallery extends Component {
             children[i] =
 
             <Carousel.Item>
-                <img className={"d-block w-100"} src={this.state.images[i]} alt='Uhhh'/>
+                <img className={"d-block w-100"}
+                     src={this.state.images[i]}
+                     alt='Uhhh'
+                    style={{maxHeight: 600,
+                            maxWidth: 1000,
+                            margin: 30,
+                            }}/>
                 <Carousel.Caption>
                     <h3>Yee haw</h3>
                     <p>Bepis</p>
