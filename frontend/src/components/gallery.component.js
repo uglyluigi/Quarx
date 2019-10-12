@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Container, Row, Carousel} from "react-bootstrap";
+import "../styles/gallery.component.css"
 import {get_base_url_for_api_reqs} from "../common";
 
 export default class Gallery extends Component {
@@ -34,9 +35,8 @@ export default class Gallery extends Component {
             children[i] =
 
             <Carousel.Item>
-                <img className={"h-50"}
+                <img className={"border h-50 rounded-right-100"}
                      src={this.state.images[i]}
-                     alt='Uhhh'
                     style={{maxHeight: 800,
                             margin: 30,
                             }}/>
