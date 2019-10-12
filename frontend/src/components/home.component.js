@@ -1,5 +1,5 @@
 import '../styles/material-fonts.css'
-import '../styles/home-component.css'
+import '../styles/home.component.css'
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
