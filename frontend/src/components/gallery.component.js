@@ -35,7 +35,7 @@ export default class Gallery extends Component {
             children[i] =
 
             <Carousel.Item>
-                <img className={"border h-50 rounded-right-100"}
+                <img className={"border h-50"}
                      src={this.state.images[i]}
                     style={{maxHeight: 800,
                             margin: 30,
