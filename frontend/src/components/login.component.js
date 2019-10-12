@@ -45,7 +45,8 @@ const useStyles = theme => ({
         },
     },
     alignment: {
-        marginTop: theme.spacing(5),
+        marginTop: theme.spacing(25),
+        marginBottom: theme.spacing(48),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
