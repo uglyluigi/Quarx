@@ -322,12 +322,10 @@ export class MailComponent extends React.Component {
             email: this.state.email,
             phone_number: this.state.phoneNumber,
         }).then(response => {
+            console.log(response.status);
             switch (response.status) {
                 case 201:
                     this.flashSnackBar("success", "Thanks for registering!");
-                    break;
-                case 400:
-                    this.flashSnackBar("info", "You\'re already registered!");
                     break;
                 default:
                     this.flashSnackBar("error", "An unknown error has occurred. For shame!");
@@ -336,6 +334,14 @@ export class MailComponent extends React.Component {
         }, err => {
             this.flashSnackBar("error", "An unknown error has occurred. For shame!");
             console.log("Error occurred on submission: " + err);
+
+            switch (err.response.status) {
+                case 409:
+                    this.flashSnackBar("info", "You\'re already registered!");
+                    break;
+                default:
+                    break;
+            }
         });
     }
 
