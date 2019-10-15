@@ -24,8 +24,8 @@ const images = [
     },
     {
         url: image3,
-        link: '/merchandise',
-        title: 'Merch',
+        link: '/gallery',
+        title: 'Gallery',
         width: '80%',
     },
 ];
