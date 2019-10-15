@@ -40,12 +40,9 @@ router.post('/', (request, response, next) => {
                  */
                 response.status(400).json({err: error_msgs.filter(x => x)});
             } else if (err.name === "MongoError") {
-                if (err.code === 11000) {
-                    response.status(409).json({err: "That email address or phone number already exists in the DB."});
-                } else {
-                    error_msgs[2] = "MongoError: " + err.errmsg;
-                    response.status(400).json({err: error_msgs.filter(x => x)})
-                }
+                error_msgs[2] = "MongoError: " + err.errmsg;
+                response.status(400).json({err: error_msgs.filter(x => x)});
+                console.log(err.errmsg);
             }
         });
 
