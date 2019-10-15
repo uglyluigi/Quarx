@@ -3,7 +3,13 @@ const EMSUser = require('../../models/ems-user.model');
 
 router.post('/', (request, response, next) => {
     console.log("POST to /event-messenger");
-    let new_user = new EMSUser({email: request.body.email, phone_number: request.body.phone_number});
+    let new_user;
+
+    if (response.phone_number) {
+        new_user = new EMSUser({email: request.body.email, phone_number: request.body.phone_number});
+    } else {
+        new_user = new EMSUser({email: request.body.email});
+    }
 
     new_user
         .save()
