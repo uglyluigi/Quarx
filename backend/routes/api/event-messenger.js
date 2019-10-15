@@ -5,7 +5,7 @@ router.post('/', (request, response, next) => {
     console.log("POST to /event-messenger");
     let new_user;
 
-    if (response.phone_number) {
+    if (request.body.phone_number) {
         new_user = new EMSUser({email: request.body.email, phone_number: request.body.phone_number});
     } else {
         new_user = new EMSUser({email: request.body.email});
@@ -40,9 +40,12 @@ router.post('/', (request, response, next) => {
                  */
                 response.status(400).json({err: error_msgs.filter(x => x)});
             } else if (err.name === "MongoError") {
-                error_msgs[2] = "MongoError: " + err.errmsg;
-                response.status(400).json({err: error_msgs.filter(x => x)});
-                console.log(err.errmsg);
+                if (err.code === 11000) {
+                    response.status(409).json({err: "That email address or phone number already exists in the DB."});
+                } else {
+                    error_msgs[2] = "MongoError: " + err.errmsg;
+                    response.status(400).json({err: error_msgs.filter(x => x)})
+                }
             }
         });
 
