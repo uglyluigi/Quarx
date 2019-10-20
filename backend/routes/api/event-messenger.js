@@ -1,14 +1,44 @@
 const router = require('express').Router();
 const EMSUser = require('../../models/ems-user.model');
 
+/**
+ * Mongoose things the 'unique' property is a joke only to be taken seriously
+ * by some (but not itself) making this preflight DB check necessary.
+ *
+ * @param email eeeeeeeeee
+ * @param phone_num ppppppppppp
+ * @returns {boolean} booooooooooooooooooo
+ */
+function reg_preflight(email, phone_num) {
+    let flag = false;
+
+    for (let doc of [{email: email}, {phone_number: phone_num}]) {
+        EMSUser
+            .find(doc)
+            .then(thing => {
+                flag = thing.length > 0;
+            } , err => console.log(err));
+    }
+
+    return flag;
+}
+
+
 router.post('/', (request, response, next) => {
     console.log("POST to /event-messenger");
     let new_user;
+    let email_addr = request.body.email;
+    let phone_num = request.body.phone_number;
+    let register = false;
 
     if (request.body.phone_number) {
-        new_user = new EMSUser({email: request.body.email, phone_number: request.body.phone_number});
+        new_user = new EMSUser({email: email_addr, phone_number: phone_num});
     } else {
         new_user = new EMSUser({email: request.body.email});
+    }
+
+    if (reg_preflight(email_addr, phone_num)) {
+        return response.status(409).json({err: "That email address or phone number already exists in the DB."});
     }
 
     new_user
@@ -44,7 +74,7 @@ router.post('/', (request, response, next) => {
                     response.status(409).json({err: "That email address or phone number already exists in the DB."});
                 } else {
                     error_msgs[2] = "MongoError: " + err.errmsg;
-                    response.status(400).json({err: error_msgs.filter(x => x)})
+                    response.status(400).json({err: error_msgs.filter(x => x)});
                 }
             }
         });
