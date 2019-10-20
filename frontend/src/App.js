@@ -20,8 +20,8 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import Link from "@material-ui/core/Link";
 import Image from "react-bootstrap/Image";
 import banner from './assets/photos/2.jpeg'
-const axios = require('axios');
 
+const axios = require('axios');
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -47,8 +47,8 @@ const theme = createMuiTheme({
                 }
             }
         },
-        MuiIcon:{
-            root:{
+        MuiIcon: {
+            root: {
                 color: 'white !important'
             }
         },
@@ -86,33 +86,17 @@ function App() {
     return (
         <Router>
             <div className={classes.alignment}>
-            <Link
-                href={'https://www.facebook.com/Quarxband/'}>
-                <FacebookIcon
-                    color='secondary'/>
-            </Link>
-            <Link
-                href={'https://twitter.com/quarxband?lang=en'}>
-                <TwitterIcon
-                    color='secondary'/>
-            </Link>
-            <Link
-                href={'https://www.instagram.com/quarxband/'}>
-                <InstagramIcon
-                    color='secondary'/>
-            </Link>
-        </div>
+
+            </div>
+
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
-            <div className={"logo"} style={{
-                backgroundColor: '#FFEDD5',
-            }}>
-                    <Image  src={banner} fluid style={{
-                        height: '50vw',
+                <div className={"logo"} style={{backgroundColor: '#FFEDD5'}}>
+                    <Image src={banner} fluid style={{
+                        height: '100vh',
                     }}>
                     </Image>
-            </div>
+                </div>
             </NavLink>
-            <Navbar/>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
             <Route path="/merchandise" exact component={Merchandise}/>
