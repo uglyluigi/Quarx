@@ -85,10 +85,9 @@ function App() {
 
     return (
         <Router>
+            <Navbar/>
             <div className={classes.alignment}>
-
             </div>
-
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className={"logo"} style={{backgroundColor: '#FFEDD5'}}>
                     <Image src={banner} fluid style={{
