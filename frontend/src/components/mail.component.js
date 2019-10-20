@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
-import {amber, green} from '@material-ui/core/colors';
+import {amber, deepPurple, green} from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -66,7 +66,8 @@ const useStyles = theme => ({
         },
     },
     alignment: {
-        marginTop: theme.spacing(5),
+        marginTop: theme.spacing(25),
+        marginBottom: theme.spacing(48),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -110,7 +111,7 @@ const useStyles1 = makeStyles(theme => ({
         backgroundColor: theme.palette.error.dark,
     },
     info: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: deepPurple[500],
     },
     warning: {
         backgroundColor: amber[700],
@@ -204,8 +205,9 @@ export function CustomizedSnackbars(props) {
 }
 
 //----END MUI MAGIC----
-
 export class MailComponent extends React.Component {
+
+
     constructor(props) {
         super(props);
 
@@ -322,19 +324,34 @@ export class MailComponent extends React.Component {
             phone_number: this.state.phoneNumber,
         }).then(response => {
             switch (response.status) {
+                //200 = your email address had a phone number added to it successfully in the DB
+                case 200:
+                    this.flashSnackBar("success", "Thanks for updating your registration!");
+                    break;
+                //201 = your registration was successfully completed and the DB document was created
                 case 201:
                     this.flashSnackBar("success", "Thanks for registering!");
                     break;
-                case 400:
+                default:
+                    this.flashSnackBar("error", "An unknown error has occurred. For shame!");
+                    console.log(`API responded with ${response.status}. WTF?`);
+                    break;
+            }
+        }, err => {
+            switch (err.response.status) {
+                //304 = your attempt to update your registration failed
+                case 304:
+                    this.flashSnackBar("info", "Your registration is unchanged.");
+                    break;
+                //409 = your email address/phone number was present in the DB already
+                case 409:
                     this.flashSnackBar("info", "You\'re already registered!");
                     break;
                 default:
                     this.flashSnackBar("error", "An unknown error has occurred. For shame!");
+                    console.log(`API responded with ${err.response.status}. WTF?`);
                     break;
             }
-        }, err => {
-            this.flashSnackBar("error", "An unknown error has occurred. For shame!");
-            console.log("Error occurred on submission: " + err);
         });
     }
 
@@ -349,7 +366,7 @@ export class MailComponent extends React.Component {
         const target = e.target.name;
 
         switch (target) {
-            case "email" :
+            case "email":
                 this.validateField(target, this.state.email);
                 emailError = !this.state.emailValid;
                 break;
@@ -386,7 +403,7 @@ export class MailComponent extends React.Component {
                         Sign up
                     </Typography>
                     <form className={classes.form} onSubmit={this.onSubmit}>
-                        <ThemeProvider theme={theme} uiTheme={theme}>
+                        <ThemeProvider theme={theme}>
                             <TextField
                                 onChange={this.handleUserInput}
                                 error={this.state.emailError}

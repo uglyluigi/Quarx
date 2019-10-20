@@ -8,21 +8,20 @@ export default class Music extends Component {
         return (
             <Container>
                 <Row>
-                    <Col>
-                        <iframe src="https://www.youtube.com/embed/fghUN5xnGAo" frameBorder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen/>
+                    <iframe width="1375" height="787" src="https://www.youtube.com/embed/fghUN5xnGAo"
+                             frameBorder="1"
+                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                             allowFullScreen/>
 
                         <iframe width="1375" height="787" src="https://www.youtube.com/embed/XrSKLibOw1g"
-                                frameBorder="0"
+                                frameBorder="1"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen/>
 
-                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/0L7kVvJYdPE"
-                                frameBorder="0"
+                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/0L7kVvJYdPE" 
+                                frameBorder="1"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen/>
-                    </Col>
                 </Row>
 
 

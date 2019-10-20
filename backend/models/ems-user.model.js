@@ -14,7 +14,7 @@ const EMSUserSchema = new Schema({
     phone_number: {
        type: String,
         required: false,
-        unique: true,
+        unique: false,
         trim: true,
         validate: [validatePhoneNumber, "Invalid phone number."],
     }

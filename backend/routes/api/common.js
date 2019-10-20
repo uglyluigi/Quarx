@@ -81,5 +81,13 @@ module.exports = {
         if (err) {
             response.status(500).json({err: err});
         }
+    },
+
+    /**
+     *
+     * @returns {string}
+     */
+    get_base_url_for_api_reqs: function () {
+        return 'http://localhost:5000';
     }
-};
+}

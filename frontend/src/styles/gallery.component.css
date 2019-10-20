@@ -1,0 +1,8 @@
+.border {
+    border-width:10px !important;
+    border-color: #282c34 !important;
+    border-spacing: 10px !important;
+}
+img{
+  max-width: 900px;
+}

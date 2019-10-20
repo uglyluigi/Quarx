@@ -1,51 +1,13 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:900%22");
-
-$size: 18vw;
-$shadow: 18;
-$primary: grey;
-$secondary: black;
-
-.wrapper {
-  animation: sliding-background 60s linear infinite;
-  background: url("https://images.unsplash.com/photo-1452697620382-f6543ead73b5") no-repeat left / 140%;
-  height: 45vh;
+body {
   text-align: center;
-  width: 100vw;
 }
 
-.title {
-  background: $primary;
-  color: $secondary;
-  font-family: "Montserrat", sans-serif;
-  font-size: $size;
-  letter-spacing: 3vw;
-  line-height: 43vh;
-  margin: 0;
-  mix-blend-mode: hard-light;
-  text-transform: uppercase;
-  $text-shadow: ();
-  @for $i from 1 through $shadow {
-    $text-shadow: $text-shadow, 1px * $i 1px * $i $secondary;
-  }
-  text-shadow: 0 0 0, $text-shadow;
-
-  &:before {
-    color: $primary;
-    content: attr(data-text);
-    margin-left: -1%;
-    margin-top: -1%;
-    position: absolute;
-  }
+.logo {
+  animation: colorRotate 7s linear infinite;
 }
 
-@keyframes sliding-background {
-  0%,
+@keyframes colorRotate {
   100% {
-    background-position: 0 60%;
-  }
-
-  50% {
-    background-position: 100% 60%;
+    -webkit-filter: hue-rotate(360deg);
   }
 }
-

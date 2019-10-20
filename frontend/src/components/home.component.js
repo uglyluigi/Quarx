@@ -1,13 +1,12 @@
 import '../styles/material-fonts.css'
-import '../styles/home-component.css'
+import '../styles/home.component.css'
 import React, {Component} from 'react';
-import {Container, Row, Col} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import image1 from '../assets/photos/3.jpg'
-import image2 from '../assets/photos/2.jpeg'
+import image1 from '../assets/photos/31.jpg'
+import image2 from '../assets/photos/41.jpg'
 import image3 from '../assets/photos/1.jpg'
 
 const images = [
@@ -15,34 +14,35 @@ const images = [
         url: image1,
         link: '/music',
         title: 'Music',
-        width: '50%',
+        width: '80%',
     },
     {
         url: image2,
         link: '/mail',
         title: 'Mailing list',
-        width: '50%',
+        width: '80%',
     },
     {
         url: image3,
-        link: '/merchandise',
-        title: 'Merch',
-        width: '50%',
+        link: '/gallery',
+        title: 'Gallery',
+        width: '80%',
     },
 ];
 
 const useStyles = makeStyles(theme => ({
+
     root: {
         display: 'flex',
-        flexWrap: 'wrap',
         minWidth: 300,
         width: '100%',
+
     },
     image: {
         position: 'relative',
-        height: 600,
+        height: 700,
         [theme.breakpoints.down('xs')]: {
-            width: '100% !important', // Overrides inline-style
+            width: '100% !important',
             height: '100% !important',
         },
         '&:hover, &$focusVisible': {
@@ -72,12 +72,13 @@ const useStyles = makeStyles(theme => ({
     },
     imageSrc: {
         position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+        opacity: 0.7,
         backgroundSize: 'cover',
-        backgroundPosition: 'center 250%',
+        backgroundPosition: 'center 100%',
     },
     imageBackdrop: {
         position: 'absolute',
@@ -86,20 +87,22 @@ const useStyles = makeStyles(theme => ({
         top: 0,
         bottom: 0,
         backgroundColor: theme.palette.common.black,
-        opacity: 0.4,
+        opacity: .8,
         transition: theme.transitions.create('opacity'),
     },
     imageTitle: {
         position: 'relative',
+        top: -220,
         padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+        fontSize: 40,
     },
     imageMarked: {
         height: 3,
-        width: 18,
+        width: 180,
         backgroundColor: theme.palette.common.white,
         position: 'absolute',
-        bottom: -2,
-        left: 'calc(50% - 9px)',
+        bottom: -3,
+        left: 'calc(50% - 90px)',
         transition: theme.transitions.create('opacity'),
     },
 }));

@@ -10,19 +10,21 @@ import Mail from "./components/mail.component"
 import Login from "./components/login.component"
 import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
+import Gallery from "./components/gallery.component";
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
+import Image from "react-bootstrap/Image";
+import banner from './assets/photos/2.jpeg'
 
 const axios = require('axios');
-
 const theme = createMuiTheme({
     palette: {
         primary: {
             main: '#171717',
         },
         secondary: {
-            main: '#282c34',
+            main: '#e46645',
         },
     },
     textPrimary: {
@@ -41,6 +43,12 @@ const theme = createMuiTheme({
                 }
             }
         },
+        MuiIcon: {
+            root: {
+                color: 'white !important'
+            }
+        },
+
     }
 });
 
@@ -49,12 +57,11 @@ const useStyles = makeStyles({
         body: {
             backgroundColor: theme.palette.primary.main,
         },
+
     },
     alignment: {
-        marginTop: theme.spacing(5),
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'left',
     },
 });
 
@@ -74,19 +81,22 @@ function App() {
 
     return (
         <Router>
+            <Navbar/>
+            <div className={classes.alignment}>
+            </div>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
-                <div className="wrapper">
-                    <div className={"title"} data-text={"Quarx"}>
-                        Quarx
-                    </div>
+                <div className={"logo"} style={{backgroundColor: '#FFEDD5'}}>
+                    <Image src={banner} fluid style={{
+                        height: '100vh',
+                    }}>
+                    </Image>
                 </div>
             </NavLink>
-            <Navbar/>
-            <br/>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
             <Route path="/merchandise" exact component={Merchandise}/>
             <Route path="/mail" exact component={Mail}/>
+            <Route path="/gallery" exact component={Gallery}/>
             <Route path="/login" exact component={Login}/>
             <Route path='/control-panel' render={() => (
                 loggedIn ? (<ControlPanel/>) : (<Redirect to={'/login'}/>)
