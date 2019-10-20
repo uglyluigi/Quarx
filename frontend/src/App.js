@@ -14,10 +14,6 @@ import Gallery from "./components/gallery.component";
 import {NavLink} from 'react-router-dom';
 import {createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import Link from "@material-ui/core/Link";
 import Image from "react-bootstrap/Image";
 import banner from './assets/photos/2.jpeg'
 
