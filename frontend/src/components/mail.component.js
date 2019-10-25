@@ -17,6 +17,10 @@ import {amber, deepPurple, green} from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
+import {Row} from "react-bootstrap";
+
+import '../styles/mail.component.css'; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
+
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
@@ -394,81 +398,89 @@ export class MailComponent extends React.Component {
 
         return (
             <Container maxWidth="xs">
-                <div className={classes.alignment}>
-                    <Avatar className={classes.avatar}>
-                        <MailOutlineIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign up
-                    </Typography>
-                    <form className={classes.form} onSubmit={this.onSubmit}>
-                        <ThemeProvider theme={theme}>
-                            <TextField
-                                onChange={this.handleUserInput}
-                                error={this.state.emailError}
-                                onBlur={this.onLoseFocus}
-                                autoFocus
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelColor,
-                                        focused: classes.focused,
-                                    },
-                                }}
-                                InputProps={{
-                                    classes: {
-                                        root: classes.inputColor,
-                                        focused: classes.focused,
-                                        notchedOutline: classes.notchedOutline,
-                                    }
-                                }}
-                            />
-                            <TextField
-                                onChange={this.handleUserInput}
-                                error={this.state.phoneNumberError}
-                                onBlur={this.onLoseFocus}
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                id="phoneNumber"
-                                label="Phone Number"
-                                name="phoneNumber"
-                                InputLabelProps={{
-                                    classes: {
-                                        root: classes.labelColor,
-                                        focused: classes.focused,
-                                    },
-                                }}
-                                InputProps={{
-                                    classes: {
-                                        root: classes.inputColor,
-                                        focused: classes.focused,
-                                        notchedOutline: classes.notchedOutline,
-                                    }
-                                }}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="secondary"
-                                className={classes.submit}
-                                disabled={!this.state.formValid}
-                                onClick={this.handleClick}
-                            >
-                                Sign Up
-                            </Button>
-                            <CustomizedSnackbars variant={this.state.snackBarVariant}
-                                                 message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
-                        </ThemeProvider>
-                    </form>
-                </div>
+                <Row>
+                    <div>
+                        <p>Use the sign up form on the right to for email and/or text alerts for live performances from Quarx.<br/>
+                        Sign-up only requires a valid email address. A phone number can also be provided if you would
+                        prefer to receive alerts that way, or added later.
+                        </p>
+                    </div>
+                    <div className={classes.alignment}>
+                        <Avatar className={classes.avatar}>
+                            <MailOutlineIcon/>
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign up
+                        </Typography>
+                        <form className={classes.form} onSubmit={this.onSubmit}>
+                            <ThemeProvider theme={theme}>
+                                <TextField
+                                    onChange={this.handleUserInput}
+                                    error={this.state.emailError}
+                                    onBlur={this.onLoseFocus}
+                                    autoFocus
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelColor,
+                                            focused: classes.focused,
+                                        },
+                                    }}
+                                    InputProps={{
+                                        classes: {
+                                            root: classes.inputColor,
+                                            focused: classes.focused,
+                                            notchedOutline: classes.notchedOutline,
+                                        }
+                                    }}
+                                />
+                                <TextField
+                                    onChange={this.handleUserInput}
+                                    error={this.state.phoneNumberError}
+                                    onBlur={this.onLoseFocus}
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    id="phoneNumber"
+                                    label="Phone Number"
+                                    name="phoneNumber"
+                                    InputLabelProps={{
+                                        classes: {
+                                            root: classes.labelColor,
+                                            focused: classes.focused,
+                                        },
+                                    }}
+                                    InputProps={{
+                                        classes: {
+                                            root: classes.inputColor,
+                                            focused: classes.focused,
+                                            notchedOutline: classes.notchedOutline,
+                                        }
+                                    }}
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.submit}
+                                    disabled={!this.state.formValid}
+                                    onClick={this.handleClick}
+                                >
+                                    Sign Up
+                                </Button>
+                                <CustomizedSnackbars variant={this.state.snackBarVariant}
+                                                     message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
+                            </ThemeProvider>
+                        </form>
+                    </div>
+                </Row>
             </Container>
         );
     }
