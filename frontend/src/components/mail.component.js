@@ -367,19 +367,18 @@ export class MailComponent extends React.Component {
 
         switch (target) {
             case "email":
-                this.validateField(target, this.state.email);
-                emailError = !this.state.emailValid;
+                this.validateField(target, this.state.email, result => {
+                    emailError = !result;
+                });
                 break;
             case "phoneNumber":
                 this.validateField(target, this.state.phoneNumber, result => {
-                    if (!result) {
-                        phoneNumberError = true;
-                    }
+                    phoneNumberError = !result;
                 });
                 break;
         }
 
-        this.setState({emailError: emailError, phoneNumberError: phoneNumberError});
+        this.setState({emailError: emailError, phoneNumberError: phoneNumberError}, () => this.validateForm());
     }
 
     /**
