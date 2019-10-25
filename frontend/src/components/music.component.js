@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import "../styles/music.component.css"
-import {Col, Container, Row} from "react-bootstrap";
+import {Container, Row} from "react-bootstrap";
+import SpotifyPlayer from 'react-spotify-player';
 
 export default class Music extends Component {
 
@@ -9,22 +10,22 @@ export default class Music extends Component {
             <Container>
                 <Row>
                     <iframe width="1375" height="787" src="https://www.youtube.com/embed/fghUN5xnGAo"
-                             frameBorder="1"
-                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                             allowFullScreen/>
+                            frameBorder="1"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen/>
 
-                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/XrSKLibOw1g"
-                                frameBorder="1"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen/>
+                    <iframe width="1375" height="787" src="https://www.youtube.com/embed/XrSKLibOw1g"
+                            frameBorder="1"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen/>
 
-                        <iframe width="1375" height="787" src="https://www.youtube.com/embed/0L7kVvJYdPE" 
-                                frameBorder="1"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen/>
+                    <SpotifyPlayer
+                        uri={"spotify:artist:2IqQNFhbgFsccxMWoNpOWQ"}
+                        size={{width: '100%', height: 300}}
+                        view={'list'}
+                        theme={'black'}
+                    />
                 </Row>
-
-
             </Container>
         );
     }
