@@ -19,7 +19,8 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import {Row} from "react-bootstrap";
 
-import '../styles/mail.component.css'; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
+import '../styles/mail.component.css';
+import Col from "react-bootstrap/Col"; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
 
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
@@ -69,15 +70,25 @@ const useStyles = theme => ({
             backgroundColor: theme.palette.primary.main,
         },
     },
-    alignment: {
-        marginTop: theme.spacing(25),
-        marginBottom: theme.spacing(48),
+    alignmentForm: {
+        margin: theme.spacing(25, 0, 28, 0),
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    alignmentItem: {
+        marginBottom: theme.spacing(3),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
+    alignmentText: {
+        margin: theme.spacing(25, 0, 28, 10),
+    },
     avatar: {
         margin: theme.spacing(1),
+        alignItems: 'center',
+        display: 'flex',
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -480,7 +491,8 @@ export class MailComponent extends React.Component {
                             </ThemeProvider>
                         </form>
                     </div>
-                </Row>
+                </div>
+
             </Container>
         );
     }
