@@ -12,7 +12,7 @@ import ControlPanel from "./components/control-panel.component";
 import Navbar from "./components/navbar.component"
 import Gallery from "./components/gallery.component";
 import {NavLink} from 'react-router-dom';
-import {createMuiTheme, makeStyles} from "@material-ui/core";
+import {Card, createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
 import Image from "react-bootstrap/Image";
 import banner from './assets/photos/2.jpeg'
@@ -92,6 +92,11 @@ function App() {
                     </Image>
                 </div>
             </NavLink>
+            <div style={{
+                backgroundColor: 'black',
+            }}>
+                <br/>
+            </div>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
             <Route path="/merchandise" exact component={Merchandise}/>
