@@ -3,4 +3,5 @@ iframe {
     height: 81vh;
     color: black;
     border: 7px solid;
+    border-top: 0;
 }
