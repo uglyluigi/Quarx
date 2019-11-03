@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         position: 'relative',
-        height: 700,
+        height: '81vh',
         [theme.breakpoints.down('xs')]: {
             width: '100% !important',
             height: '100% !important',
@@ -72,10 +72,10 @@ const useStyles = makeStyles(theme => ({
     },
     imageSrc: {
         position: 'absolute',
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
+        left: 7,
+        right: 7,
+        top: 0,
+        bottom: 7,
         opacity: 0.7,
         backgroundSize: 'cover',
         backgroundPosition: 'center 100%',
