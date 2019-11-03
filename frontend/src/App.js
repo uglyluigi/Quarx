@@ -16,7 +16,7 @@ import {Card, createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
 import Image from "react-bootstrap/Image";
 import banner from './assets/photos/2.jpeg';
-import banner2 from './assets/photos/banner5.jpg';
+import banner2 from './assets/photos/banner.jpg';
 import Container from "@material-ui/core/Container";
 
 const axios = require('axios');

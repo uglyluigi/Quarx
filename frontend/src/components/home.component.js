@@ -5,8 +5,8 @@ import {NavLink} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import image1 from '../assets/photos/31.jpg'
-import image2 from '../assets/photos/41.jpg'
+import image1 from '../assets/photos/3.jpg'
+import image2 from '../assets/photos/4.jpg'
 import image3 from '../assets/photos/1.jpg'
 
 const images = [
