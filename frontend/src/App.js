@@ -15,7 +15,9 @@ import {NavLink} from 'react-router-dom';
 import {Card, createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
 import Image from "react-bootstrap/Image";
-import banner from './assets/photos/2.jpeg'
+import banner from './assets/photos/2.jpeg';
+import banner2 from './assets/photos/banner5.jpg';
+import Container from "@material-ui/core/Container";
 
 const axios = require('axios');
 const theme = createMuiTheme({
@@ -91,12 +93,18 @@ function App() {
                     }}>
                     </Image>
                 </div>
+                <div style={{
+                    backgroundColor: 'black',
+                }}>
+                    <Image className={"logo"} src={banner2} fluid style={{
+                        width: '100vw',
+                        marginTop: '1vh',
+                        marginBottom: '1vh',
+                        opacity: .34,
+                    }}>
+                    </Image>
+                </div>
             </NavLink>
-            <div style={{
-                backgroundColor: 'black',
-            }}>
-                <br/>
-            </div>
             <Route path="/" exact component={Home}/>
             <Route path="/music" exact component={Music}/>
             <Route path="/merchandise" exact component={Merchandise}/>
