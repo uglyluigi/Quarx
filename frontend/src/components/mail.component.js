@@ -17,10 +17,7 @@ import {amber, deepPurple, green} from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
-import {Row} from "react-bootstrap";
-
 import '../styles/mail.component.css';
-import Col from "react-bootstrap/Col"; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
 
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
@@ -71,10 +68,12 @@ const useStyles = theme => ({
         },
     },
     alignmentForm: {
-        margin: theme.spacing(25, 0, 28, 0),
+        marginTop: '20vh',
+        marginBottom: '17vh',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        maxHeight: '44vh',
     },
     alignmentItem: {
         marginBottom: theme.spacing(3),
@@ -83,7 +82,10 @@ const useStyles = theme => ({
         alignItems: 'center',
     },
     alignmentText: {
-        margin: theme.spacing(25, 0, 28, 10),
+        marginTop: '20vh',
+        marginLeft: '13vh',
+        marginBottom: '17vh',
+        alignItems: 'center',
     },
     avatar: {
         margin: theme.spacing(1),
@@ -92,7 +94,7 @@ const useStyles = theme => ({
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
-        marginTop: theme.spacing(1),
+        marginTop: '1vh',
     },
     labelColor: {
         color: 'grey',
@@ -487,7 +489,8 @@ export class MailComponent extends React.Component {
                         </ThemeProvider>
                     </form>
                     <div className={classes.alignmentText}>
-                        <p>Use the sign up form to register for email and/or text alerts about live performances from<br/>
+                        <p>Use the sign up form to register for email and/or text alerts about live performances
+                            from<br/>
                             Quarx. Sign-up requires a valid email address. At any time, a phone number can also be
                             provided to receive alerts.
                         </p>
