@@ -17,6 +17,11 @@ import {amber, deepPurple, green} from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
+import {Row} from "react-bootstrap";
+
+import '../styles/mail.component.css';
+import Col from "react-bootstrap/Col"; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
+
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
@@ -65,15 +70,25 @@ const useStyles = theme => ({
             backgroundColor: theme.palette.primary.main,
         },
     },
-    alignment: {
-        marginTop: theme.spacing(25),
-        marginBottom: theme.spacing(48),
+    alignmentForm: {
+        margin: theme.spacing(25, 0, 28, 0),
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    alignmentItem: {
+        marginBottom: theme.spacing(3),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
+    alignmentText: {
+        margin: theme.spacing(25, 0, 28, 10),
+    },
     avatar: {
         margin: theme.spacing(1),
+        alignItems: 'center',
+        display: 'flex',
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -367,19 +382,18 @@ export class MailComponent extends React.Component {
 
         switch (target) {
             case "email":
-                this.validateField(target, this.state.email);
-                emailError = !this.state.emailValid;
+                this.validateField(target, this.state.email, result => {
+                    emailError = !result;
+                });
                 break;
             case "phoneNumber":
                 this.validateField(target, this.state.phoneNumber, result => {
-                    if (!result) {
-                        phoneNumberError = true;
-                    }
+                    phoneNumberError = !result;
                 });
                 break;
         }
 
-        this.setState({emailError: emailError, phoneNumberError: phoneNumberError});
+        this.setState({emailError: emailError, phoneNumberError: phoneNumberError}, () => this.validateForm());
     }
 
     /**
@@ -394,15 +408,18 @@ export class MailComponent extends React.Component {
         const {classes} = this.props;
 
         return (
-            <Container maxWidth="xs">
-                <div className={classes.alignment}>
-                    <Avatar className={classes.avatar}>
-                        <MailOutlineIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign up
-                    </Typography>
+            <Container>
+                <div className={classes.alignmentForm}>
+
                     <form className={classes.form} onSubmit={this.onSubmit}>
+                        <div className={classes.alignmentItem}>
+                            <Avatar className={classes.avatar}>
+                                <MailOutlineIcon/>
+                            </Avatar>
+                            <Typography component="h1" variant="h5">
+                                Sign up
+                            </Typography>
+                        </div>
                         <ThemeProvider theme={theme}>
                             <TextField
                                 onChange={this.handleUserInput}
@@ -469,7 +486,14 @@ export class MailComponent extends React.Component {
                                                  message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
                         </ThemeProvider>
                     </form>
+                    <div className={classes.alignmentText}>
+                        <p>Use the sign up form to register for email and/or text alerts about live performances from<br/>
+                            Quarx. Sign-up requires a valid email address. At any time, a phone number can also be
+                            provided to receive alerts.
+                        </p>
+                    </div>
                 </div>
+
             </Container>
         );
     }
