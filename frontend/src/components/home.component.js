@@ -157,7 +157,9 @@ export function ButtonBases() {
 export default class Home extends Component {
     render() {
         return (
-            <ButtonBases/>
+            <ButtonBases style={{
+                backgroundColor: 'black',
+            }}/>
         );
     }
 }
