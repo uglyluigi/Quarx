@@ -6,9 +6,11 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
+
 class NavBar extends Component {
     render() {
         return (
+
                 <MDBNavbar
                     className="navbar fixed-top navbar-expand-lg navbar-dark"
                 style={{
@@ -42,21 +44,21 @@ class NavBar extends Component {
                             <MDBNavItem>
                                 <Link
                                     href={'https://www.facebook.com/Quarxband/'}>
-                                    <FacebookIcon
-                                        color='secondary'
-                                        style={{fontSize: "xx-large"}}/>
+                                    <FacebookIcon className={"icon"}
+                                        color='primary'
+                                        style={{fontSize: '4.5vh'}}/>
                                 </Link>
                                 <Link
                                     href={'https://twitter.com/quarxband?lang=en'}>
-                                    <TwitterIcon
-                                        color='secondary'
-                                        style={{fontSize: "xx-large"}}/>
+                                    <TwitterIcon className={"icon"}
+                                        color='primary'
+                                        style={{fontSize: '4.5vh'}}/>
                                 </Link>
                                 <Link
                                     href={'https://www.instagram.com/quarxband/'}>
-                                    <InstagramIcon
-                                        color='secondary'
-                                    style={{fontSize: "xx-large"}}/>
+                                    <InstagramIcon className={"icon"}
+                                        color='primary'
+                                    style={{fontSize: '4.5vh'}}/>
                                 </Link>
                             </MDBNavItem>
                         </MDBNavbarNav>
@@ -64,5 +66,4 @@ class NavBar extends Component {
         );
     }
 }
-
 export default NavBar;
