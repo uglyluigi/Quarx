@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { MDBNavbar, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBCollapse, MDBIcon } from "mdbreact";
+import { MDBNavbar, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBIcon } from "mdbreact";
 import Link from "@material-ui/core/Link";
 import "../styles/navbar.component.css";
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -9,7 +9,11 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 class NavBar extends Component {
     render() {
         return (
-                <MDBNavbar className="navbar fixed-top navbar-expand-lg navbar-dark ">
+                <MDBNavbar
+                    className="navbar fixed-top navbar-expand-lg navbar-dark"
+                style={{
+                    backgroundColor: '#171717',
+                }}>
                         <MDBNavbarNav left>
                             <MDBNavItem active>
                                 <MDBNavLink to="/">Home</MDBNavLink>
