@@ -68,15 +68,15 @@ const useStyles = theme => ({
         },
     },
     alignmentForm: {
-        marginTop: '17vh',
-        marginBottom: '20vh',
+        marginTop: '12vh',
+        marginBottom: '25vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         maxHeight: '44vh',
     },
     alignmentItem: {
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -88,11 +88,11 @@ const useStyles = theme => ({
         alignItems: 'center',
     },
     avatar: {
-        margin: theme.spacing(1),
+        marginBottom: '4vh',
         alignItems: 'center',
         display: 'flex',
-        height: '8vh',
-        width: '8vh',
+        height: '12vh',
+        width: '12vh',
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -419,12 +419,12 @@ export class MailComponent extends React.Component {
                         <div className={classes.alignmentItem}>
                             <Avatar className={classes.avatar}>
                                 <MailOutlineIcon style={{
-                                    height: '5vh',
-                                    width: '5vh',
+                                    height: '8vh',
+                                    width: '8vh',
                                 }}/>
                             </Avatar>
                             <Typography component="h1" variant="h5" style={{
-                                fontSize: '4vh'
+                                fontSize: '5vh'
                             }}>
                                 Sign up
                             </Typography>
