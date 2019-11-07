@@ -6,5 +6,21 @@ nav{
 
 .icon {
 
+    animation: dropShadow 2s linear infinite;
 }
 
+.logo {
+    animation: colorRotate 7s linear infinite;
+}
+
+@keyframes dropShadow {
+    0% {
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%)
+    }
+    50%{
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%) drop-shadow(0 0 .07rem white);
+    }
+    100%{
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%);
+    }
+}
