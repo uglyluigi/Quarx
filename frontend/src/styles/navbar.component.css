@@ -1,16 +1,11 @@
 nav{
-    font-size: 23px;
+    font-size: 27px;
     background: black;
 }
-
 
 .icon {
 
     animation: dropShadow 2s linear infinite;
-}
-
-.logo {
-    animation: colorRotate 7s linear infinite;
 }
 
 @keyframes dropShadow {
