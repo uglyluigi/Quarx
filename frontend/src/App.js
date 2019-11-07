@@ -89,7 +89,8 @@ function App() {
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className={"logo"} style={{backgroundColor: '#FFEDD5'}}>
                     <Image src={banner} fluid style={{
-                        height: '100vh',
+                        margin: '2vh',
+                        height: '96vh',
                     }}>
                     </Image>
                 </div>
