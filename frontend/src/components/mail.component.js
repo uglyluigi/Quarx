@@ -91,6 +91,8 @@ const useStyles = theme => ({
         margin: theme.spacing(1),
         alignItems: 'center',
         display: 'flex',
+        height: '8vh',
+        width: '8vh',
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -416,9 +418,14 @@ export class MailComponent extends React.Component {
                     <form className={classes.form} onSubmit={this.onSubmit}>
                         <div className={classes.alignmentItem}>
                             <Avatar className={classes.avatar}>
-                                <MailOutlineIcon/>
+                                <MailOutlineIcon style={{
+                                    height: '5vh',
+                                    width: '5vh',
+                                }}/>
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h1" variant="h5" style={{
+                                fontSize: '4vh'
+                            }}>
                                 Sign up
                             </Typography>
                         </div>
