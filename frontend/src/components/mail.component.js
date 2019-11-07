@@ -68,10 +68,10 @@ const useStyles = theme => ({
         },
     },
     alignmentForm: {
-        marginTop: '20vh',
-        marginBottom: '17vh',
+        marginTop: '17vh',
+        marginBottom: '20vh',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         maxHeight: '44vh',
     },
@@ -495,11 +495,13 @@ export class MailComponent extends React.Component {
                                                  message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
                         </ThemeProvider>
                     </form>
-                    <div className={classes.alignmentText}>
+                    <div style={{
+                        marginTop: '7vh',
+                        maxWidth: '45vw',
+                    }}>
                         <p>Use the sign up form to register for email and/or text alerts about live performances
-                            from<br/>
-                            Quarx. Sign-up requires a valid email address. At any time, a phone number can also be
-                            provided to receive alerts.
+                            from Quarx.  Sign-up requires a valid email address.  At any time, a phone number can also be
+                            provided to receive SMS alerts.
                         </p>
                     </div>
                 </div>
