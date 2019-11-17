@@ -53,6 +53,7 @@ export default class Gallery extends Component {
         return (
             <Container fluid style={{
                 backgroundColor: 'black',
+                minHeight: '81vh',
             }}>
                 <Carousel>
                     {this.state.children}
