@@ -35,10 +35,8 @@ export default class Gallery extends Component {
             children[i] =
 
             <Carousel.Item>
-                <img className={"border h-50"}
-                     src={this.state.images[i]}
-                    style={{maxHeight: 800,
-                            margin: 30,
+                <img src={this.state.images[i]}
+                    style={{height: '81vh',
                             }}/>
             </Carousel.Item>;
         }
@@ -53,7 +51,10 @@ export default class Gallery extends Component {
 
     render() {
         return (
-            <Container>
+            <Container fluid style={{
+                backgroundColor: 'black',
+                minHeight: '81vh',
+            }}>
                 <Carousel>
                     {this.state.children}
                 </Carousel>

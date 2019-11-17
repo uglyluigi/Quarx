@@ -17,10 +17,7 @@ import {amber, deepPurple, green} from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
-import {Row} from "react-bootstrap";
-
 import '../styles/mail.component.css';
-import Col from "react-bootstrap/Col"; //LOGAN THIS IS WHERE THE STYLE RULES FOR THE TEXT THAT APPEARS ON THIS PAGE ARE LOCATED
 
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
@@ -71,28 +68,35 @@ const useStyles = theme => ({
         },
     },
     alignmentForm: {
-        margin: theme.spacing(25, 0, 28, 0),
+        marginTop: '12vh',
+        marginBottom: '25vh',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
+        maxHeight: '44vh',
     },
     alignmentItem: {
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
     alignmentText: {
-        margin: theme.spacing(25, 0, 28, 10),
+        marginTop: '20vh',
+        marginLeft: '13vh',
+        marginBottom: '17vh',
+        alignItems: 'center',
     },
     avatar: {
-        margin: theme.spacing(1),
+        marginBottom: '4vh',
         alignItems: 'center',
         display: 'flex',
+        height: '12vh',
+        width: '12vh',
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
-        marginTop: theme.spacing(1),
+        marginTop: '1vh',
     },
     labelColor: {
         color: 'grey',
@@ -414,9 +418,14 @@ export class MailComponent extends React.Component {
                     <form className={classes.form} onSubmit={this.onSubmit}>
                         <div className={classes.alignmentItem}>
                             <Avatar className={classes.avatar}>
-                                <MailOutlineIcon/>
+                                <MailOutlineIcon style={{
+                                    height: '8vh',
+                                    width: '8vh',
+                                }}/>
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h1" variant="h5" style={{
+                                fontSize: '5vh'
+                            }}>
                                 Sign up
                             </Typography>
                         </div>
@@ -486,10 +495,13 @@ export class MailComponent extends React.Component {
                                                  message={this.state.snackBarMessage} open={this.state.showSnackBar}/>
                         </ThemeProvider>
                     </form>
-                    <div className={classes.alignmentText}>
-                        <p>Use the sign up form to register for email and/or text alerts about live performances from<br/>
-                            Quarx. Sign-up requires a valid email address. At any time, a phone number can also be
-                            provided to receive alerts.
+                    <div style={{
+                        marginTop: '7vh',
+                        maxWidth: '45vw',
+                    }}>
+                        <p>Use the sign up form to register for email and/or text alerts about live performances
+                            from Quarx.  Sign-up requires a valid email address.  At any time, a phone number can also be
+                            provided to receive SMS alerts.
                         </p>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import {DB_URI, MDB_CLIENT_OPS, PORT} from './constants';
+import {DB_URI, PORT, BASE_URL} from './constants';
 require('dotenv').config();
 
 const express = require('express');
@@ -11,8 +11,7 @@ const passport = require('passport');
 require('./passport');
 const log_request = require('./routes/api/common').log_request;
 
-
-axiosDefaults.baseURL = 'http://localhost:5000';
+axiosDefaults.baseURL = BASE_URL;
 
 express_app.use(log_request);
 express_app.use(cors());
@@ -24,25 +23,21 @@ express_app.use(passport.initialize());
 
 //Begin listening
 express_app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
+    console.log(`Express application is running on ${BASE_URL}`);
 });
 
-//Register blog post API endpoints
+//Register API endpoints
 express_app.use('/', require('./routes/index'));
 
 //--DB STUFF--
-
 console.log(require('express-list-endpoints')(express_app));
 
 const connection = mongoose.connection;
 
 connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
+    console.log("MongoDB connection established successfully");
 });
 
 mongoose.connect(DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}).then(r =>{
     console.log(`Successfully connected to MONGODB @ ${DB_URI}`);
 }).catch(err => console.log(`Failed to connect to MONGODB @ ${DB_URI}:\n${err}`));
-
-
-

@@ -1,5 +1,21 @@
 nav{
-    font-size: 23px;
+    font-size: 27px;
     background: black;
 }
 
+.icon {
+
+    animation: dropShadow 2s linear infinite;
+}
+
+@keyframes dropShadow {
+    0% {
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%)
+    }
+    50%{
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%) drop-shadow(0 0 .07rem white);
+    }
+    100%{
+        -webkit-filter: brightness(150%) hue-rotate(-20deg) saturate(1000%);
+    }
+}

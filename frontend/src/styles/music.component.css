@@ -1,16 +1,7 @@
-.center {
-    display: block;
-    justify-content: left;
-    flex-direction: column;
-    height: 400px;
-}
-
 iframe {
-    width: 31%;
-    height: 500px;
-    color: darkgrey;
-    border: 3px solid;
-    margin-top: 16vw;
-    margin-bottom: 12vw;
-    margin-left: 20px;
+    width: 33vw;
+    height: 81vh;
+    color: black;
+    border: 7px solid;
+    border-top: 0;
 }
