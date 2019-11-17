@@ -9,7 +9,7 @@ router.use('/login', require('./login'));
 router.use('/assets', require('./assets'));
 
 if (IS_TEST_ENV) {
-    console.log("Enabling test APIs");
+    console.log("[WARNING] TEST APIs ARE ENABLED");
     router.use('/test', require('./test'));
 }
 
