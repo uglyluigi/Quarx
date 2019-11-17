@@ -121,4 +121,15 @@ router.post('/', (request, response, next) => {
     return response;
 });
 
+router.get('/delete', (request, response, next) => {
+    EMSUser
+        .deleteOne({email: request.query.email})
+        .then(() => response.status(200).json({message: "You have successfully unsubscribed."}), (err) => {
+            console.log(err);
+            response.status(500).json({err: err});
+        });
+
+    return response;
+});
+
 module.exports = router;
