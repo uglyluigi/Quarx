@@ -11,6 +11,7 @@ const passport = require('passport');
 require('./passport');
 const log_request = require('./routes/api/common').log_request;
 
+const sgWorker = require('./workers/sendgrid-worker');
 
 axiosDefaults.baseURL = 'http://localhost:5000';
 
@@ -43,6 +44,3 @@ connection.once('open', () => {
 mongoose.connect(DB_URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}).then(r =>{
     console.log(`Successfully connected to MONGODB @ ${DB_URI}`);
 }).catch(err => console.log(`Failed to connect to MONGODB @ ${DB_URI}:\n${err}`));
-
-
-
