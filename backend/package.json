@@ -20,7 +20,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
-    "sendgrid-nodejs": "0.1.0-2"
+    "sendgrid-nodejs": "0.1.0-2",
+    "@sendgrid/mail": "latest"
   },
   "scripts": {
     "nodemon-es6": "nodemon --exec babel-node --presets es2015 server.js"
