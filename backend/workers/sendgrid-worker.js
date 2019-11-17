@@ -1,4 +1,4 @@
-import {IS_TEST_ENV} from "../constants";
+import {IS_TEST_ENV, BASE_URL} from "../constants";
 
 require('dotenv').config();
 const sgMail = require('@sendgrid/mail');
@@ -14,7 +14,7 @@ function sendToAll(subject, html) {
         }
 
         for (let user of users) {
-            html += `<br/>To unsubscribe, click <a href=\"http://localhost:5000/api/event-messenger/delete?email=${user.email}\">here</a>`;
+            html += `<br/>To unsubscribe, click <a href=\"${BASE_URL}/api/event-messenger/delete?email=${user.email}\">here</a>`;
             sendEmail(user.email, 'alerts@quarx.com', subject, html);
         }
     });
