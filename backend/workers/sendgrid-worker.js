@@ -13,10 +13,8 @@ function sendToAll(subject, html) {
             console.log('No email addresses to send emails to');
         }
 
-        html += `<br/>To unsubscribe, click <a href=\"${BASE_URL}/api/event-messenger/delete?email=${user.email}\">here</a>`;
-        
         for (let user of users) {
-            sendEmail(user.email, 'alerts@quarx.com', subject, html);
+            sendEmail(user.email, 'alerts@quarx.com', subject, html + `<br/>To unsubscribe, click <a href=\"${BASE_URL}/api/event-messenger/delete?email=${user.email}\">here</a>`);
         }
     });
 }
