@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Container from '@material-ui/core/Container';
@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {createMuiTheme} from "@material-ui/core/styles";
-import {ThemeProvider} from "@material-ui/styles";
-import {withStyles} from '@material-ui/styles';
+import {ThemeProvider, withStyles} from "@material-ui/styles";
 import {PropTypes} from 'prop-types';
 import {getBaseUrl} from '../common';
 
@@ -78,7 +77,7 @@ const useStyles = theme => ({
 });
 
 export class LoginComponent extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -96,7 +95,7 @@ export class LoginComponent extends React.Component {
         }
     }
 
-    handleUserInput (e) {
+    handleUserInput(e) {
         e.preventDefault();
 
         const name = e.target.name;
@@ -107,7 +106,7 @@ export class LoginComponent extends React.Component {
         });
     }
 
-    validateField (name, value) {
+    validateField(name, value) {
         let fieldValidationErrors = this.state.formErrors;
         let usernameValid = this.state.usernameValid;
         let passwordValid = this.state.passwordValid;
@@ -132,18 +131,22 @@ export class LoginComponent extends React.Component {
                 break;
         }
 
-        this.setState({formErrors: fieldValidationErrors, usernameValid: usernameValid, passwordValid: passwordValid}, () => this.validateForm());
+        this.setState({
+            formErrors: fieldValidationErrors,
+            usernameValid: usernameValid,
+            passwordValid: passwordValid
+        }, () => this.validateForm());
     }
 
-    validateForm () {
+    validateForm() {
         this.setState({formValid: this.state.usernameValid && this.state.passwordValid});
     }
 
-    errorClass (error) {
+    errorClass(error) {
         return error.length === 0 ? '' : 'has-error';
     }
 
-    onSubmit (event) {
+    onSubmit(event) {
         event.preventDefault();
         const axios = require('axios');
 
@@ -164,7 +167,27 @@ export class LoginComponent extends React.Component {
         });
     }
 
-    render () {
+    componentDidMount() {
+        if (localStorage.token) {
+            const axios = require('axios');
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.token}`,
+                }
+            };
+
+            axios.get(getBaseUrl() + "/api/login/login", config).then(response => {
+                console.log(response);
+
+                if (response.status === 200) {
+                    this.props.history.push('/../control-panel');
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    render() {
         const {classes} = this.props;
 
         return (
@@ -176,7 +199,8 @@ export class LoginComponent extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Typography component={'h1'} variant={'h5'} style={{visibility: this.state.goodResponse ? 'hidden' : 'visible'}}>
+                    <Typography component={'h1'} variant={'h5'}
+                                style={{visibility: this.state.goodResponse ? 'hidden' : 'visible'}}>
                         Invalid credentials.
                     </Typography>
                     <form className={classes.form} onSubmit={this.onSubmit}>
