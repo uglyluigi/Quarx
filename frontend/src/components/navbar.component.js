@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MDBNavbar, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBIcon} from "mdbreact";
+import {MDBNavbar, MDBNavbarNav, MDBNavItem, MDBNavLink} from "mdbreact";
 import Link from "@material-ui/core/Link";
 import "../styles/navbar.component.css";
 import FacebookIcon from '@material-ui/icons/Facebook';

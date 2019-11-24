@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Carousel} from "react-bootstrap";
+import {Carousel, Container} from "react-bootstrap";
 import "../styles/gallery.component.css"
-import {get_base_url_for_api_reqs} from "../common";
 
 export default class Gallery extends Component {
     constructor(props) {
@@ -34,11 +33,12 @@ export default class Gallery extends Component {
         for (let i = 0; i < this.state.images.length; i++) {
             children[i] =
 
-            <Carousel.Item>
-                <img src={this.state.images[i]}
-                    style={{height: '81vh',
-                            }}/>
-            </Carousel.Item>;
+                <Carousel.Item>
+                    <img src={this.state.images[i]}
+                         style={{
+                             height: '81vh',
+                         }}/>
+                </Carousel.Item>;
         }
 
         console.log(children);
