@@ -500,7 +500,7 @@ export class MailComponent extends React.Component {
                         maxWidth: '45vw',
                     }}>
                         <p>Use the sign up form to register for email and/or text alerts about live performances
-                            from Quarx.  Sign-up requires a valid email address.  At any time, a phone number can also be
+                            from Quarx. Sign-up requires a valid email address. At any time, a phone number can also be
                             provided to receive SMS alerts.
                         </p>
                     </div>
