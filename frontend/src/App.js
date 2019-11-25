@@ -69,17 +69,12 @@ const useStyles = makeStyles({
 
 function App() {
     const classes = useStyles();
-    let loggedIn = false;
-
-    if (localStorage.token) {
-        loggedIn = axios.get(getBaseUrl() + '/api/login/login', {
-            headers: {
-                "Authorization": "Bearer " + localStorage.token,
-            }
-        }).then(response => {
-            return response.status === 200;
-        });
-    }
+    const axios = require('axios');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+        }
+    };
 
     return (
         <Router>
@@ -112,9 +107,20 @@ function App() {
             <Route path="/mail" exact component={Mail}/>
             <Route path="/gallery" exact component={Gallery}/>
             <Route path="/login" exact component={Login}/>
-            <Route path='/control-panel' render={() => (
-                loggedIn ? (<ControlPanel/>) : (<Redirect to={'/login'}/>)
-            )}/>
+            <Route path='/control-panel' render={() => {
+                    if (localStorage.token) {
+                        let validToken = Promise.resolve(axios.get(`${getBaseUrl()}/api/login/login`, config).then(response => response.status === 200, err => false).then(res => res));
+
+                        if (validToken) {
+                            return <ControlPanel/>;
+                        } else {
+                            return <Redirect to={"/login"}/>;
+                        }
+                    } else {
+                        return <Redirect to={"/login"}/>;
+                    }
+                }
+            }/>
         </Router>
     );
 }
