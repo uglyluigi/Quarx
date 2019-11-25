@@ -47,6 +47,7 @@ export default class ControlPanel extends React.Component {
             }
         }, err => {
             this.setState({doLoad: false});
+            console.log(err);
         });
     }
 }
