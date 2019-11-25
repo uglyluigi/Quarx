@@ -5,25 +5,23 @@ import {NavLink} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import image1 from '../assets/photos/3.jpg'
-import image2 from '../assets/photos/4.jpg'
-import image3 from '../assets/photos/1.jpg'
+import {getBaseUrl} from '../common';
 
 const images = [
     {
-        url: image1,
+        url: `${getBaseUrl()}/api/assets/button-images/3.jpg`,
         link: '/music',
         title: 'Music',
         width: '80%',
     },
     {
-        url: image2,
+        url: `${getBaseUrl()}/api/assets/button-images/4.jpg`,
         link: '/mail',
         title: 'Mailing list',
         width: '80%',
     },
     {
-        url: image3,
+        url: `${getBaseUrl()}/api/assets/button-images/1.jpg`,
         link: '/gallery',
         title: 'Gallery',
         width: '80%',
