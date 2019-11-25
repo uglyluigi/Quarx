@@ -1,7 +1,8 @@
 import React from 'react';
 import {EditorState} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
-import {getBaseUrl} from '../common';
+import {Redirect} from 'react-router-dom';
+import {getBaseUrl} from "../common";
 
 export default class ControlPanel extends React.Component {
 
@@ -25,7 +26,7 @@ export default class ControlPanel extends React.Component {
                     editorClassName={"HTMLEditor"}/>
             );
         } else {
-            return (<div/>);
+            return (<Redirect to={"/"}/>);
         }
     }
 
