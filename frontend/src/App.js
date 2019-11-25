@@ -109,7 +109,7 @@ function App() {
             <Route path="/login" exact component={Login}/>
             <Route path='/control-panel' render={() => {
                     if (localStorage.token) {
-                        let validToken = Promise.resolve(axios.get(`${getBaseUrl()}/api/login/login`, config).then(response => response.status === 200, err => false).then(res => res));
+                        let validToken = Promise.resolve(axios.get(`${getBaseUrl()}/api/login/login`, config).then(response => response.status === 200, err => false));
 
                         if (validToken) {
                             return <ControlPanel/>;
