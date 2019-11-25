@@ -7,39 +7,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 /**
- * POST router to /api/login/signup
- *
- * Probably not even going to be used,
- * since there's only going to be 1 user
- * allowed to log in to the site since
- * we only want site admins to have special
- * access.
- */
-router.post('/signup', passport.authenticate('jwt', {session: false}), (request, response, next) => {
-    AccessUser.register(new AccessUser({username: request.body.username}), request.body.password, (err, user) => {
-        if (err) {
-            response.status(500).json({err: err});
-        } else {
-            passport.authenticate('local')(request, response, () => {
-                AccessUser.findOne({username: request.body.username}, (err, person) => {
-                    go_away_err(err, response);
-
-                    if (!err) {
-                        response.status(200).json({
-                            message: "You\'ve been successfully logged in.",
-                            success: true,
-                            happy_4_u: true
-                        });
-                    }
-                })
-            });
-        }
-    });
-
-    return response;
-});
-
-/**
  * POST router to /api/login/login (yep)
  *
  * Receives a username and password. Logs the user in if passport says it's OK.
@@ -91,8 +58,7 @@ router.get('/login', (request, response) => {
         let userId = decoded._id;
 
         AccessUser.findOne({_id: userId}).then(user => {
-            console.log('Login request approved.');
-            response.status(200).json(user);
+            response.status(200).json({message: "Login request approved. Logged in as " + user.username});
         })
     } else {
         response.status(400).json({message: 'Invalid credentials.'});
