@@ -9,19 +9,19 @@ import {getBaseUrl} from '../common';
 
 const images = [
     {
-        url: `${getBaseUrl()}/api/assets/button-images/3.jpg`,
+        url: `${getBaseUrl()}/api/assets/global-assets/3.jpg`,
         link: '/music',
         title: 'Music',
         width: '80%',
     },
     {
-        url: `${getBaseUrl()}/api/assets/button-images/4.jpg`,
+        url: `${getBaseUrl()}/api/assets/global-assets/4.jpg`,
         link: '/mail',
         title: 'Mailing list',
         width: '80%',
     },
     {
-        url: `${getBaseUrl()}/api/assets/button-images/1.jpg`,
+        url: `${getBaseUrl()}/api/assets/global-assets/1.jpg`,
         link: '/gallery',
         title: 'Gallery',
         width: '80%',

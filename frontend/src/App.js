@@ -15,8 +15,6 @@ import {NavLink} from 'react-router-dom';
 import {Card, createMuiTheme, makeStyles} from "@material-ui/core";
 import {getBaseUrl} from "./common"
 import Image from "react-bootstrap/Image";
-import banner from './assets/photos/2.jpeg';
-import banner2 from './assets/photos/banner.jpg';
 import Container from "@material-ui/core/Container";
 
 const axios = require('axios');
@@ -83,7 +81,7 @@ function App() {
             </div>
             <NavLink to="/" style={{textDecoration: 'none'}} activeStyle={{textDecoration: 'none'}}>
                 <div className={"logo"} style={{backgroundColor: '#FFEDD5'}}>
-                    <Image src={banner} fluid style={{
+                    <Image src={`${getBaseUrl()}/api/assets/global-assets/2.jpeg`} fluid style={{
                         margin: '2vh',
                         height: '96vh',
                     }}>
@@ -92,7 +90,7 @@ function App() {
                 <div style={{
                     backgroundColor: 'black',
                 }}>
-                    <Image className={"logo"} src={banner2} fluid style={{
+                    <Image className={"logo"} src={`${getBaseUrl()}/api/assets/global-assets/banner.jpg`} fluid style={{
                         width: '100vw',
                         marginTop: '1vh',
                         marginBottom: '1vh',

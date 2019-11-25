@@ -28,8 +28,8 @@ router.get('/carousel-images/:image', (request, response) => {
     return response;
 });
 
-router.get('/button-images', (request, response) => {
-    fs.readdir('./assets/button_images', (err, files) => {
+router.get('/global-assets', (request, response) => {
+    fs.readdir('./assets/global_assets', (err, files) => {
         if (err) {
             console.log("Error reading button image directory: " + err);
             response.status(500).json({err: err});
@@ -37,7 +37,7 @@ router.get('/button-images', (request, response) => {
             let resp_files = [];
 
             for (let i = 0; i < files.length; i++) {
-                resp_files[i] = get_base_url_for_api_reqs().concat('/api/assets/button-images/').concat(files[i]);
+                resp_files[i] = get_base_url_for_api_reqs().concat('/api/assets/global-assets/').concat(files[i]);
             }
 
             console.log(resp_files);
@@ -48,9 +48,9 @@ router.get('/button-images', (request, response) => {
     return response;
 });
 
-router.get('/button-images/:image', (request, response) => {
+router.get('/global-assets/:image', (request, response) => {
     const image = request.params.image;
-    fs.readFile('./assets/button_images/'.concat(image), (err, content) => respondWithImages(err, content, response));
+    fs.readFile('./assets/global_assets/'.concat(image), (err, content) => respondWithImages(err, content, response));
     return response;
 });
 
