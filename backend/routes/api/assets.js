@@ -24,22 +24,48 @@ router.get('/carousel-images', (request, response) => {
 
 router.get('/carousel-images/:image', (request, response) => {
     const image = request.params.image;
+    fs.readFile('./assets/carousel_images/'.concat(image), (err, content) => respondWithImages(err, content, response));
+    return response;
+});
 
-    fs.readFile('./assets/carousel_images/'.concat(image), (err, content) => {
+router.get('/button-images', (request, response) => {
+    fs.readdir('./assets/button_images', (err, files) => {
         if (err) {
-            if (err.errno === -4058) {
-                response.status(400).json({message: "That image does not exist."});
-            } else {
-                console.log('Error reading file in response to request:' + err);
-                response.status(500).json({err: err});
-            }
+            console.log("Error reading button image directory: " + err);
+            response.status(500).json({err: err});
         } else {
-            response.writeHead(200, {'Content-type': 'image/jepg'});
-            response.end(content);
+            let resp_files = [];
+
+            for (let i = 0; i < files.length; i++) {
+                resp_files[i] = get_base_url_for_api_reqs().concat('/api/assets/button-images/').concat(files[i]);
+            }
+
+            console.log(resp_files);
+            response.status(200).json({images: resp_files});
         }
     });
 
     return response;
 });
+
+router.get('/button-images/:image', (request, response) => {
+    const image = request.params.image;
+    fs.readFile('./assets/button_images/'.concat(image), (err, content) => respondWithImages(err, content, response));
+    return response;
+});
+
+function respondWithImages(err, content, response) {
+    if (err) {
+        if (err.errno === -4058) {
+            response.status(400).json({message: "That image does not exist."});
+        } else {
+            console.log('Error reading file in response to request:' + err);
+            response.status(500).json({err: err});
+        }
+    } else {
+        response.writeHead(200, {'Content-type': 'image/jpeg'});
+        response.end(content);
+    }
+}
 
 module.exports = router;
