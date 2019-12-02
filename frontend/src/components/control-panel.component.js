@@ -10,27 +10,30 @@ export default class ControlPanel extends React.Component {
         super(props);
 
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.checkLogin = this.checkLogin.bind(this);
 
         this.state = {
-            doLoad: false
+            doLoad: false,
+            checkDone: false,
         }
     }
 
     render() {
-        if (this.state.doLoad) {
-            return (
-                <Editor
-                    editorState={EditorState.defaultEditorState}
-                    toolbarClassName={"HTMLEditorToolbar"}
-                    wrapperClassName={"HTMLEditorWrapper"}
-                    editorClassName={"HTMLEditor"}/>
-            );
+        if (this.state.checkDone) {
+            if (this.state.doLoad) {
+                return (
+                    <div>Login success</div>
+                );
+            } else {
+                return (<Redirect to={"/login"}/>);
+            }
         } else {
-            return (<Redirect to={"/"}/>);
+            return (<div/>);
         }
     }
 
     componentDidMount() {
+        console.log("CHECKING YEET");
         const axios = require('axios');
         const config = {
             headers: {
@@ -46,9 +49,19 @@ export default class ControlPanel extends React.Component {
             } else {
                 this.setState({doLoad: false});
             }
+
+            this.setState({checkDone: true});
         }, err => {
             this.setState({doLoad: false});
             console.log(err);
         });
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
+    checkLogin() {
+
     }
 }
