@@ -22,7 +22,11 @@ export default class ControlPanel extends React.Component {
         if (this.state.checkDone) {
             if (this.state.doLoad) {
                 return (
-                    <div>Login success</div>
+                    <div className={"logo2"} style={{
+                        fontSize: '300px',
+                        color: 'red',
+                        minHeight: '81vh',
+                    }}>Login<br/> success</div>
                 );
             } else {
                 return (<Redirect to={"/login"}/>);
