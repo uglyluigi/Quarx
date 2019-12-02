@@ -37,28 +37,30 @@ export default class ControlPanel extends React.Component {
     }
 
     componentDidMount() {
-        console.log("CHECKING YEET");
-        const axios = require('axios');
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localStorage.token}`,
-            }
-        };
+        if (localStorage.token) {
+            const axios = require('axios');
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.token}`,
+                }
+            };
 
-        axios.get(getBaseUrl() + "/api/login/login", config).then(response => {
-            console.log(response);
+            axios.get(getBaseUrl() + "/api/login/login", config).then(response => {
+                console.log(response);
 
-            if (response.status === 200) {
-                this.setState({doLoad: true});
-            } else {
+                if (response.status === 200) {
+                    this.setState({doLoad: true});
+                } else {
+                    this.setState({doLoad: false});
+                }
+
+                this.setState({checkDone: true});
+            }, err => {
                 this.setState({doLoad: false});
-            }
-
-            this.setState({checkDone: true});
-        }, err => {
-            this.setState({doLoad: false});
-            console.log(err);
-        });
+                console.log(err);
+                this.setState({checkDone: true});
+            });
+        }
     }
 
     componentWillUnmount() {
